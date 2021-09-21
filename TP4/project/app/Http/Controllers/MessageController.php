@@ -7,6 +7,10 @@ use App\Models\Message;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+
 
 class MessageController extends Controller
 {
@@ -29,12 +33,9 @@ class MessageController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, ([
-            'firstname' => 'required|string',
-            'lastname' => 'required|string',
-            'login' => 'required|string',
-            'password' => 'required|string',
-            'coordinates' => 'required|string',
-            'contaminated' => 'required|integer'
+            'user1' => 'required|string',
+            'user2' => 'required|string',
+            'content' => 'required|string'
         ]));
 
         if ($validator->fails()) {
@@ -49,7 +50,7 @@ class MessageController extends Controller
 
         DB::beginTransaction();
         try {
-            $user = User::create($input);
+            $message = Message::create($input);
             DB::commit();
         } catch (Exception $e) {
             Log::info($e->getMessage());
@@ -66,11 +67,11 @@ class MessageController extends Controller
 
         return [
             'data' => [
-                new UserResource($user)
+                new MessageResource($message)
             ],
             'meta' => [
                 'success' => true,
-                'message' => 'User created',
+                'message' => 'Message created',
                 'code' => 201
             ]
         ];
@@ -81,25 +82,22 @@ class MessageController extends Controller
         $input = $request->all();
 
         try {
-            $user = User::findOrFail($id);
+            $message = Message::findOrFail($id);
         } catch (Exception $e) {
             return [
                 'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => 'User does not exists',
+                    'message' => 'Message does not exists',
                     'code' => 404
                 ]
             ];
         }
 
         $validator = Validator::make($input, [
-            'firstname' => 'sometimes|string',
-            'lastname' => 'sometimes|string',
-            'login' => 'sometimes|string',
-            'password' => 'sometimes|string',
-            'coordinates' => 'sometimes|string',
-            'contaminated' => 'sometimes|integer'
+            'user1' => 'sometimes|string',
+            'user2' => 'sometimes|string',
+            'content' => 'sometimes|string'
         ]);
 
         if ($validator->fails()) {
@@ -114,7 +112,7 @@ class MessageController extends Controller
 
         DB::beginTransaction();
         try {
-            $user->update($input);
+            $message->update($input);
             DB::commit();
         } catch (Exception $e) {
             Log::info($e->getMessage());
@@ -131,11 +129,11 @@ class MessageController extends Controller
 
         return [
             'data' => [
-                new UserResource($user)
+                new MessageResource($message)
             ],
             'meta' => [
                 'success' => true,
-                'message' => 'User updated',
+                'message' => 'Message updated',
                 'code' => 200
             ]
         ];
@@ -144,7 +142,7 @@ class MessageController extends Controller
     public function destroy(Request $request, int $id)
     {
         try {
-            $user = User::findOrFail($id);
+            $message = Message::findOrFail($id);
         } catch (Exception $e) {
             return [
                 'data' => $e->getMessage(),
@@ -158,7 +156,7 @@ class MessageController extends Controller
 
         DB::beginTransaction();
         try {
-            $user->delete();
+            $message->delete();
             DB::commit();
         } catch (Exception $e) {
             Log::info($e->getMessage());
@@ -177,7 +175,7 @@ class MessageController extends Controller
             'data' => [],
             'meta' => [
                 'success' => true,
-                'message' => 'User deleted',
+                'message' => 'Message deleted',
                 'code' => 200
             ]
         ];
