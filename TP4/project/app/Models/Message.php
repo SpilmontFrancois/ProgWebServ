@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $user2
  * @property string $content
  */
-class Ingredient extends Model
+class Message extends Model
 {
     /**
      * The table associated with the model.

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/', function () {
+    return [
+        'data' => [],
+        'meta' => [
+            'success' => true,
+            'message' => "",
+        ]
+    ];
 });
+
+Route::apiResource('users', UserController::class);
+Route::apiResource('messages', MessageController::class);

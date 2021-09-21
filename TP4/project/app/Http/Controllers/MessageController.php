@@ -2,29 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\UserResource;
-use App\Models\User;
+use App\Http\Resources\MessageResource;
+use App\Models\Message;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Validator;
 
-class UserController extends Controller
+class MessageController extends Controller
 {
     public function index(Request $request)
     {
-        return UserResource::collection(User::simplePaginate($request->input('paginate') ?? 15));
+        return MessageResource::collection(Message::simplePaginate($request->input('paginate') ?? 15));
     }
 
-    public function show(int $id)
-    {
+    public function show(int $id) {
         try {
-            $user = User::findOrFail($id);
-            return json_encode(new UserResource($user));
+            $message = Message::findOrFail($id);
+            return json_encode(new MessageResource($message));
         } catch (Exception $e) {
-            return json_encode('User does not exist.');
+            return json_encode('Message does not exist.');
         }
     }
 

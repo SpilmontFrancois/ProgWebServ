@@ -14,14 +14,3 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return [
-        'data' => [],
-        'meta' => [
-            'success' => true,
-            'message' => "",
-        ]
-    ];
-});
-
-Route::apiResource('users', UserController::class);

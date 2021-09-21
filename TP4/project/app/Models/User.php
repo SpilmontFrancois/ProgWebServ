@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 /**
+ * @property int $id
  * @property string $firstname
  * @property string $lastname
  * @property string $login
@@ -24,10 +25,10 @@ class User extends Authenticatable
     /**
      * @var array
      */
-    protected $fillable = ['fisrtname', 'lastname', 'login', 'password', 'coordinates', 'contaminated'];
+    protected $fillable = ['firstname', 'lastname', 'login', 'password', 'coordinates', 'contaminated'];
 
     public function messages()
     {
-        return $this->hasMany(Messages::class);
+        return $this->hasMany(Message::class);
     }
 }
