@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +15,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return [
+        'data' => [],
+        'meta' => [
+            'success' => true,
+            'message' => "",
+        ]
+    ];
 });
+
+Route::apiResource('users', UserController::class);
