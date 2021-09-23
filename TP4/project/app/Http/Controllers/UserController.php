@@ -31,6 +31,7 @@ class UserController extends Controller
             ], 200);
         } catch (Exception $e) {
             return response()->json([
+                'data' => [],
                 'meta' => [
                     'success' => false,
                     'message' => "User does not exist."
@@ -54,6 +55,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
+                'data' => [],
                 'meta' => [
                     'success' => false,
                     'message' => "Wrongs inputs"
@@ -115,6 +117,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             return response()->json([
+                'data' => [],
                 'meta' => [
                     'success' => false,
                     'message' => "Wrongs inputs"

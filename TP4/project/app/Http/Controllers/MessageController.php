@@ -19,12 +19,25 @@ class MessageController extends Controller
         return MessageResource::collection(Message::simplePaginate($request->input('paginate') ?? 15));
     }
 
-    public function show(int $id) {
+    public function show(int $id)
+    {
         try {
             $message = Message::findOrFail($id);
-            return json_encode(new MessageResource($message));
+            return response()->json([
+                'data' => new MessageResource($message),
+                'meta' => [
+                    'success' => true,
+                    'message' => 'Message found'
+                ]
+            ], 200);
         } catch (Exception $e) {
-            return json_encode('Message does not exist.');
+            return response()->json([
+                'data' => new MessageResource($message),
+                'meta' => [
+                    'success' => false,
+                    'message' => 'Message does not exist'
+                ]
+            ], 404);
         }
     }
 
@@ -39,13 +52,13 @@ class MessageController extends Controller
         ]));
 
         if ($validator->fails()) {
-            return [
+            return response()->json([
+                'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => "Wrongs inputs",
-                    'code' => 422
+                    'message' => 'Wrong inputs'
                 ]
-            ];
+            ], 422);
         }
 
         DB::beginTransaction();
@@ -55,26 +68,22 @@ class MessageController extends Controller
         } catch (Exception $e) {
             Log::info($e->getMessage());
             DB::rollBack();
-            return [
+            return response()->json([
                 'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => $e->getMessage(),
-                    'code' => 409
+                    'message' => $e->getMessage()
                 ]
-            ];
+            ], 409);
         }
 
-        return [
-            'data' => [
-                new MessageResource($message)
-            ],
+        return response()->json([
+            'data' => new MessageResource($message),
             'meta' => [
                 'success' => true,
-                'message' => 'Message created',
-                'code' => 201
+                'message' => 'Message created'
             ]
-        ];
+        ], 201);
     }
 
     public function update(Request $request, int $id)
@@ -84,14 +93,13 @@ class MessageController extends Controller
         try {
             $message = Message::findOrFail($id);
         } catch (Exception $e) {
-            return [
+            return response()->json([
                 'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => 'Message does not exists',
-                    'code' => 404
+                    'message' => 'Message does not exists'
                 ]
-            ];
+            ], 404);
         }
 
         $validator = Validator::make($input, [
@@ -101,13 +109,13 @@ class MessageController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return [
+            return response()->json([
+                'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => "Wrongs inputs",
-                    'code' => 422
+                    'message' => "Wrongs inputs"
                 ]
-            ];
+            ], 422);
         }
 
         DB::beginTransaction();
@@ -117,26 +125,24 @@ class MessageController extends Controller
         } catch (Exception $e) {
             Log::info($e->getMessage());
             DB::rollBack();
-            return [
+            return response()->json([
                 'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => $e->getMessage(),
-                    'code' => 409
+                    'message' => $e->getMessage()
                 ]
-            ];
+            ], 409);
         }
 
-        return [
+        return response()->json([
             'data' => [
                 new MessageResource($message)
             ],
             'meta' => [
                 'success' => true,
-                'message' => 'Message updated',
-                'code' => 200
+                'message' => 'Message updated'
             ]
-        ];
+        ], 200);
     }
 
     public function destroy(Request $request, int $id)
@@ -144,14 +150,13 @@ class MessageController extends Controller
         try {
             $message = Message::findOrFail($id);
         } catch (Exception $e) {
-            return [
+            return response()->json([
                 'data' => $e->getMessage(),
                 'meta' => [
                     'success' => false,
-                    'message' => "Wrongs inputs",
-                    'code' => 422
+                    'message' => "Wrongs inputs"
                 ]
-            ];
+            ], 422);
         }
 
         DB::beginTransaction();
@@ -161,23 +166,22 @@ class MessageController extends Controller
         } catch (Exception $e) {
             Log::info($e->getMessage());
             DB::rollBack();
-            return [
+            return response()->json([
                 'data' => [],
                 'meta' => [
                     'success' => false,
                     'message' => $e->getMessage(),
                     'code' => 409
                 ]
-            ];
+            ], 409);
         }
 
-        return [
+        return response()->json([
             'data' => [],
             'meta' => [
                 'success' => true,
-                'message' => 'Message deleted',
-                'code' => 200
+                'message' => 'Message deleted'
             ]
-        ];
+        ], 200);
     }
 }
