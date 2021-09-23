@@ -22,9 +22,20 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            return json_encode(new UserResource($user));
+            return response()->json([
+                'data' => new UserResource($user),
+                'meta' => [
+                    'success' => true,
+                    'message' => "User found"
+                ]
+            ], 200);
         } catch (Exception $e) {
-            return json_encode('User does not exist.');
+            return response()->json([
+                'meta' => [
+                    'success' => false,
+                    'message' => "User does not exist."
+                ]
+            ], 404);
         }
     }
 
@@ -42,13 +53,12 @@ class UserController extends Controller
         ]));
 
         if ($validator->fails()) {
-            return [
+            return response()->json([
                 'meta' => [
                     'success' => false,
-                    'message' => "Wrongs inputs",
-                    'code' => 422
+                    'message' => "Wrongs inputs"
                 ]
-            ];
+            ], 422);
         }
 
         DB::beginTransaction();
@@ -58,26 +68,24 @@ class UserController extends Controller
         } catch (Exception $e) {
             Log::info($e->getMessage());
             DB::rollBack();
-            return [
+            return response()->json([
                 'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => $e->getMessage(),
-                    'code' => 409
+                    'message' => $e->getMessage()
                 ]
-            ];
+            ], 409);
         }
 
-        return [
+        return response()->json([
             'data' => [
                 new UserResource($user)
             ],
             'meta' => [
                 'success' => true,
-                'message' => 'User created',
-                'code' => 201
+                'message' => 'User created'
             ]
-        ];
+        ], 201);
     }
 
     public function update(Request $request, int $id)
@@ -87,14 +95,13 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
         } catch (Exception $e) {
-            return [
+            return response()->json([
                 'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => 'User does not exists',
-                    'code' => 404
+                    'message' => 'User does not exists'
                 ]
-            ];
+            ], 404);
         }
 
         $validator = Validator::make($input, [
@@ -107,13 +114,12 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return [
+            return response()->json([
                 'meta' => [
                     'success' => false,
-                    'message' => "Wrongs inputs",
-                    'code' => 422
+                    'message' => "Wrongs inputs"
                 ]
-            ];
+            ], 422);
         }
 
         DB::beginTransaction();
@@ -123,26 +129,24 @@ class UserController extends Controller
         } catch (Exception $e) {
             Log::info($e->getMessage());
             DB::rollBack();
-            return [
+            return response()->json([
                 'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => $e->getMessage(),
-                    'code' => 409
+                    'message' => $e->getMessage()
                 ]
-            ];
+            ], 409);
         }
 
-        return [
+        return response()->json([
             'data' => [
                 new UserResource($user)
             ],
             'meta' => [
                 'success' => true,
-                'message' => 'User updated',
-                'code' => 200
+                'message' => 'User updated'
             ]
-        ];
+        ], 200);
     }
 
     public function destroy(Request $request, int $id)
@@ -150,14 +154,13 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
         } catch (Exception $e) {
-            return [
+            return response()->json([
                 'data' => $e->getMessage(),
                 'meta' => [
                     'success' => false,
-                    'message' => "Wrongs inputs",
-                    'code' => 422
+                    'message' => "User not found"
                 ]
-            ];
+            ], 404);
         }
 
         DB::beginTransaction();
@@ -167,23 +170,21 @@ class UserController extends Controller
         } catch (Exception $e) {
             Log::info($e->getMessage());
             DB::rollBack();
-            return [
+            return response()->json([
                 'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => $e->getMessage(),
-                    'code' => 409
+                    'message' => $e->getMessage()
                 ]
-            ];
+            ], 409);
         }
 
-        return [
+        return response()->json([
             'data' => [],
             'meta' => [
                 'success' => true,
-                'message' => 'User deleted',
-                'code' => 200
+                'message' => 'User deleted'
             ]
-        ];
+        ], 200);
     }
 }

@@ -29,7 +29,8 @@
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "slim/slim": "4.*"
+        "slim/slim": "4.*",
+        "illuminate/database": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
