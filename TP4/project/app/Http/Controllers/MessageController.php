@@ -46,8 +46,8 @@ class MessageController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, ([
-            'user1' => 'required|string',
-            'user2' => 'required|string',
+            'user1' => 'required|integer',
+            'user2' => 'required|integer',
             'content' => 'required|string'
         ]));
 
@@ -103,8 +103,8 @@ class MessageController extends Controller
         }
 
         $validator = Validator::make($input, [
-            'user1' => 'sometimes|string',
-            'user2' => 'sometimes|string',
+            'user1' => 'sometimes|integer',
+            'user2' => 'sometimes|integer',
             'content' => 'sometimes|string'
         ]);
 
