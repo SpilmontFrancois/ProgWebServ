@@ -20,7 +20,7 @@ class Group extends Model
      * 
      * @var string
      */
-    protected $table = 'group';
+    protected $table = 'groups';
 
     /**
      * @var array
