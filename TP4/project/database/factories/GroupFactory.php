@@ -22,7 +22,7 @@ class GroupFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->word(5, true)
+            'name' => $this->faker->words(5, true)
         ];
     }
 }
