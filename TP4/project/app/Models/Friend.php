@@ -7,13 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property int $id
  * @property int $user1
  * @property int $user2
- * @property int $group_id
- * @property string $content
  */
-class Message extends Model
+class Friend extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -22,19 +19,16 @@ class Message extends Model
      * 
      * @var string
      */
-    protected $table = 'messages';
+    protected $table = 'friends';
 
     /**
      * @var array
      */
-    protected $fillable = ['user1', 'user2', 'group_id', 'content'];
+    protected $fillable = ['user1', 'user2'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-    public function group()
-    {
-        return $this->belongsTo(Group::class);
-    }
+
 }

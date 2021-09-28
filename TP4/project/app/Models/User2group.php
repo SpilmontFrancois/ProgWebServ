@@ -7,13 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property int $id
- * @property int $user1
- * @property int $user2
+ * @property int $user_id
  * @property int $group_id
- * @property string $content
+ * @property boolean $isAdmin
  */
-class Message extends Model
+class User2group extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -22,17 +20,18 @@ class Message extends Model
      * 
      * @var string
      */
-    protected $table = 'messages';
+    protected $table = 'user2group';
 
     /**
      * @var array
      */
-    protected $fillable = ['user1', 'user2', 'group_id', 'content'];
+    protected $fillable = ['user_id', 'group_id', 'isAdmin'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+
     public function group()
     {
         return $this->belongsTo(Group::class);
