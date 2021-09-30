@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\AnnonceController;
-use App\Http\Controllers\FriendController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\UserFriendController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,5 +32,5 @@ Route::get('/', function () {
 Route::apiResource('users', UserController::class);
 Route::apiResource('messages', MessageController::class);
 Route::apiResource('annonces', AnnonceController::class);
-Route::apiResource('friends', FriendController::class);
 Route::apiResource('groups', GroupController::class);
+Route::apiResource('users.friends', UserFriendController::class);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\FriendResource;
 use App\Models\Friend;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -12,24 +13,23 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 
-class FriendController extends Controller
+class UserFriendController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, User $user)
     {
         return FriendResource::collection(Friend::simplePaginate($request->input('paginate') ?? 15));
     }
 
-    public function show(int $id1, int $id2)
+    public function show(User $user, int $friend)
     {
-        // WIP : trouver comment passer 2 ids
         try {
-            print_r($id1, $id2);
-            $friend = Friend::findOrFail($id1);
+            $friend = Friend::where('user1', $user->id)->orWhere('user2', $user->id)->where('user1', $friend)->orWhere('user2', $friend)->first();
+
             return response()->json([
                 'data' => new FriendResource($friend),
                 'meta' => [
                     'success' => true,
-                    'message' => 'friends found'
+                    'message' => 'friend found'
                 ]
             ], 200);
         } catch (Exception $e) {
@@ -37,13 +37,13 @@ class FriendController extends Controller
                 'data' => [],
                 'meta' => [
                     'success' => false,
-                    'message' => 'friends does not exist'
+                    'message' => 'friend does not exist'
                 ]
             ], 404);
         }
     }
 
-    public function store(Request $request)
+    public function store(Request $request, User $user)
     {
         $input = $request->all();
 
@@ -87,10 +87,10 @@ class FriendController extends Controller
         ], 201);
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, User $user, int $friend)
     {
         try {
-            $friend = Friend::findOrFail($id);
+            $friend = Friend::where('user1', $user->id)->orWhere('user2', $user->id)->where('user1', $friend)->orWhere('user2', $friend)->first();
         } catch (Exception $e) {
             return response()->json([
                 'data' => $e->getMessage(),

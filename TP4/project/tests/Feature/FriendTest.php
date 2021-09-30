@@ -18,7 +18,7 @@ class FriendTest extends TestCase
         $u1 = User::factory()->create();
         $u2 = User::factory()->create();
 
-        $response = $this->post(route('friends.store'), [
+        $response = $this->post(route('users.friends.store', $u1->id), [
             "user1" => $u1->id,
             "user2" => $u2->id
         ]);
@@ -37,7 +37,7 @@ class FriendTest extends TestCase
             $u1 = User::factory()->create();
             $u2 = User::factory()->create();
 
-            $response = $this->post(route('friends.store'), [
+            $response = $this->post(route('users.friends.store', $u1->id), [
                 "user1" => $u1->id,
                 "user2" => $u2->id
             ]);
@@ -49,7 +49,7 @@ class FriendTest extends TestCase
                 "user2" => $u2->id
             ]);
         }
-        $response = $this->get(route('friends.index'));
+        $response = $this->get(route('users.friends.index', $u1->id));
         $response->assertSuccessful();
 
         $response->assertJsonStructure([
@@ -80,19 +80,19 @@ class FriendTest extends TestCase
         $u1 = User::factory()->create();
         $u2 = User::factory()->create();
 
-        $friend = $this->post(route('friends.store'), [
+        $friend = $this->post(route('users.friends.store', $u1->id), [
             "user1" => $u1->id,
             "user2" => $u2->id
         ]);
+
         $friend->assertSuccessful();
 
-        // WIP : trouver comment passer 2 ids --> passer la route en /user/{id}/friends
-        $response = $this->get(route('friends.show', ['id1' => $u1->id, 'id2' => $u2->id]));
+        $response = $this->get(route('users.friends.show', ['user' => $u1->id, 'friend' => $u2->id]));
         $response->assertSuccessful();
         $response->assertJson([
             'data' => [
-                "user1" => $friend->user1,
-                "user2" => $friend->user2
+                "user1" => $u1->id,
+                "user2" => $u2->id
             ],
             'meta' => [
                 'success' => true,
@@ -101,21 +101,20 @@ class FriendTest extends TestCase
         ]);
     }
 
-
     public function test_can_delete_an_friend()
     {
         $u1 = User::factory()->create();
         $u2 = User::factory()->create();
 
-        $friend = $this->post(route('friends.store'), [
+        $friend = $this->post(route('users.friends.store', $u1->id), [
             "user1" => $u1->id,
             "user2" => $u2->id
         ]);
-
-        $response = $this->delete(route('friends.destroy', [$friend->user1,  $friend->user2]));
+        
+        $response = $this->delete(route('users.friends.destroy', ['user' => $u1->id, 'friend' => $u2->id]));
         $response->assertSuccessful();
         $this->assertSoftDeleted('friends', [
-            'id' => [$friend->user1,  $friend->user2]
+            'id' => $friend['data']['id']
         ]);
     }
 }

@@ -15,6 +15,7 @@ class FriendResource extends JsonResource
     public function toArray($request)
     {
         return [
+            "id" => $this->id,
             "user1" => $this->user1,
             "user2" => $this->user2
         ];
