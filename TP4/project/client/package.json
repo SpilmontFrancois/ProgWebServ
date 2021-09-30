@@ -1,0 +1,30 @@
+{
+    "name": "project",
+    "version": "0.0.1",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "authors": [
+        {
+            "name": "François Spilmont"
+        },
+        {
+            "name": "Lucas Saker"
+        },
+        {
+            "name": "Jules François"
+        },
+        {
+            "name": "Alex Mangenot"
+        }
+    ],
+    "license": "ISC",
+    "description": "",
+    "devDependencies": {
+        "eslint": "^7.32.0"
+    },
+    "dependencies": {
+        "axios": "^0.21.4"
+    }
+}
