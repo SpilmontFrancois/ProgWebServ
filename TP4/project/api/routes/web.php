@@ -14,3 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/login', function () {
+    echo 'cc';
+});
+
+Route::post('/register', function () {
+    // TODO
+});
