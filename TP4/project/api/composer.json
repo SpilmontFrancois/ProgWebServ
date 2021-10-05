@@ -24,13 +24,12 @@
     ],
     "require": {
         "php": "^7.3|^8.0",
-        "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
+        "illuminate/database": "*",
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "slim/slim": "4.*",
-        "illuminate/database": "*"
+        "slim/slim": "4.*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
