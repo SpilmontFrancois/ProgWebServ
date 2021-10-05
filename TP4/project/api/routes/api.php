@@ -19,18 +19,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return [
-        'data' => [],
-        'meta' => [
-            'success' => true,
-            'message' => "",
-        ]
-    ];
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('messages', MessageController::class);
+    Route::apiResource('annonces', AnnonceController::class);
+    Route::apiResource('groups', GroupController::class);
+    Route::apiResource('users.friends', UserFriendController::class);
 });
-
-Route::apiResource('users', UserController::class);
-Route::apiResource('messages', MessageController::class);
-Route::apiResource('annonces', AnnonceController::class);
-Route::apiResource('groups', GroupController::class);
-Route::apiResource('users.friends', UserFriendController::class);

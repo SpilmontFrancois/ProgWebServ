@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Sanctum\HasApiTokens;
 
 /**
  * @property int $id
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class User extends Authenticatable
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasApiTokens;
 
     /**
      * The table associated with the model.
