@@ -1,0 +1,13 @@
+html, body {
+    height: 100%;
+}
+
+.bg-logo {
+    background-color: #0f222d;
+}
+
+.nav-link:hover, .list-group-item:hover {
+    background-color: wheat;
+    color: #0f222d !important;
+    font-weight: 600;
+}
