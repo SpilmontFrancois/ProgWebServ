@@ -22,13 +22,6 @@ class GroupController extends Controller
     {
         try {
             $group = Group::findOrFail($id);
-            return response()->json([
-                'data' => new GroupResource($group),
-                'meta' => [
-                    'success' => true,
-                    'message' => "Group found"
-                ]
-            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'data' => [],
@@ -38,6 +31,14 @@ class GroupController extends Controller
                 ]
             ], 404);
         }
+
+        return response()->json([
+            'data' => new GroupResource($group),
+            'meta' => [
+                'success' => true,
+                'message' => "Group found"
+            ]
+        ], 200);
     }
 
     public function store(Request $request)

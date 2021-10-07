@@ -22,13 +22,6 @@ class UserController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            return response()->json([
-                'data' => new UserResource($user),
-                'meta' => [
-                    'success' => true,
-                    'message' => "User found"
-                ]
-            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'data' => [],
@@ -38,6 +31,14 @@ class UserController extends Controller
                 ]
             ], 404);
         }
+
+        return response()->json([
+            'data' => new UserResource($user),
+            'meta' => [
+                'success' => true,
+                'message' => "User found"
+            ]
+        ], 200);
     }
 
     public function store(Request $request)

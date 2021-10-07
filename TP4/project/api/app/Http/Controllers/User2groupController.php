@@ -22,13 +22,6 @@ class User2groupController extends Controller
     {
         try {
             $User2group = User2group::findOrFail($id);
-            return response()->json([
-                'data' => new User2groupResource($User2group),
-                'meta' => [
-                    'success' => true,
-                    'message' => "User2group found"
-                ]
-            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'data' => [],
@@ -38,6 +31,14 @@ class User2groupController extends Controller
                 ]
             ], 404);
         }
+
+        return response()->json([
+            'data' => new User2groupResource($User2group),
+            'meta' => [
+                'success' => true,
+                'message' => "User2group found"
+            ]
+        ], 200);
     }
 
     public function store(Request $request)

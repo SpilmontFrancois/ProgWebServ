@@ -23,22 +23,23 @@ class MessageController extends Controller
     {
         try {
             $message = Message::findOrFail($id);
-            return response()->json([
-                'data' => new MessageResource($message),
-                'meta' => [
-                    'success' => true,
-                    'message' => 'Message found'
-                ]
-            ], 200);
         } catch (Exception $e) {
             return response()->json([
-                'data' => new MessageResource($message),
+                'data' => [],
                 'meta' => [
                     'success' => false,
                     'message' => 'Message does not exist'
                 ]
             ], 404);
         }
+        
+        return response()->json([
+            'data' => new MessageResource($message),
+            'meta' => [
+                'success' => true,
+                'message' => 'Message found'
+            ]
+        ], 200);
     }
 
     public function store(Request $request)

@@ -22,13 +22,6 @@ class AnnonceController extends Controller
     {
         try {
             $Annonce = Annonce::findOrFail($id);
-            return response()->json([
-                'data' => new AnnonceResource($Annonce),
-                'meta' => [
-                    'success' => true,
-                    'message' => "Annonce found"
-                ]
-            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'data' => [],
@@ -38,6 +31,14 @@ class AnnonceController extends Controller
                 ]
             ], 404);
         }
+
+        return response()->json([
+            'data' => new AnnonceResource($Annonce),
+            'meta' => [
+                'success' => true,
+                'message' => "Annonce found"
+            ]
+        ], 200);
     }
 
     public function store(Request $request)

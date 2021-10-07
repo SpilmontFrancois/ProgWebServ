@@ -24,14 +24,6 @@ class UserFriendController extends Controller
     {
         try {
             $friend = Friend::where('user1', $user->id)->orWhere('user2', $user->id)->where('user1', $friend)->orWhere('user2', $friend)->first();
-
-            return response()->json([
-                'data' => new FriendResource($friend),
-                'meta' => [
-                    'success' => true,
-                    'message' => 'friend found'
-                ]
-            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 'data' => [],
@@ -41,6 +33,14 @@ class UserFriendController extends Controller
                 ]
             ], 404);
         }
+        
+        return response()->json([
+            'data' => new FriendResource($friend),
+            'meta' => [
+                'success' => true,
+                'message' => 'friend found'
+            ]
+        ], 200);
     }
 
     public function store(Request $request, User $user)
