@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map</title>
+</head>
+
+<link rel="stylesheet" href="style/bootstrap.css">
+<link rel="stylesheet" href="style/custom.css">
+<link rel="stylesheet" href="style/map.css">
+<link rel="stylesheet" href="style/sidebar.css">
+<link rel="shortcut icon" href="./assets/logo.png">
+
+<body>
+    <div id='app' class="d-flex h-100">
+        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-logo h-100 w-20 align-baseline">
+            <div class="d-flex align-items-center mb-3 mb-md-0 text-white text-decoration-none justify-content-center">
+                <img src="./assets/logo.png" class="w-50" />
+            </div>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-white d-flex align-items-center">
+                        <img class="me-2" src="./assets/icons/map-marked-alt-solid.svg" height=20 width=20 />
+                        Home - Map
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link active d-flex align-items-center">
+                        <img class="me-2" src="./assets/icons/user-solid.svg" height=20 width=20 />
+                        Profil
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="nav-link text-white d-flex align-items-center">
+                        <img class="me-2" src="./assets/icons/envelope-solid.svg" height=20 width=20 />
+                        Messenger
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="d-flex justify-content-end">
+                <div class="d-flex align-items-center text-white text-decoration-none" aria-expanded="false">
+                    <button type="button" class="btn btn-danger d-flex align-items-center"><img class="me-2"
+                            src="./assets/icons/sign-out-alt-solid.svg" height=20 width=20 />Logout</button>
+                </div>
+            </div>
+        </div>
+        <script src='pages/map.js'></script>
+        <!--The div element for the map -->
+        <div id="map"></div>
+
+        <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+        <script async
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyEkxNA1bXsxQ5O0Ehy21NRTWT1_Y-NW0&callback=initMap&libraries=&v=weekly"></script>
+    </div>
+
+</body>
+
+</html>
