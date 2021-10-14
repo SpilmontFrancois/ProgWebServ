@@ -1,8 +1,8 @@
 #!/bin/bash
 echo 'started'
-ls 
-php test.php
-echo 'php tested'
+composer update
+echo 'composer updated'
 
 #php artisan migrate:fresh
+#vérifier que le .env est bien la
 
