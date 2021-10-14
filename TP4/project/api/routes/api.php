@@ -19,7 +19,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->group(function () {
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token, Authorization, Accept, charset, boundary, Content-Length');
+header('Access-Control-Allow-Origin: *');
+
+Route::middleware(['customErrors', 'auth:sanctum'])->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('messages', MessageController::class);
     Route::apiResource('annonces', AnnonceController::class);
