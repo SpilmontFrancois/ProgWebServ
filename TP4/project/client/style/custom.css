@@ -6,10 +6,42 @@ body {
     position: absolute!important;
     left: 50%;
     top: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     z-index: 2000;
 }
 
 .inscription {
     text-decoration: none;
+}
+
+.w-80 {
+    width: 80% !important;
+}
+
+.w-rem-3 {
+    width: 3rem !important;
+}
+
+small {
+    color: red;
+}
+
+.h-85 {
+    height: 85% !important;
+}
+
+.scroll {
+    overflow-y: scroll;
+}
+
+.bg-me {
+    background-color: rgb(0, 162, 255);
+}
+
+.bg-user {
+    background-color: rgb(214, 214, 214);
+}
+
+.cursor-p {
+    cursor: pointer;
 }
