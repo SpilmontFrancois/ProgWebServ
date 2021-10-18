@@ -14,26 +14,21 @@ async function put(url, body) {
     return request(url, 'PUT', body)
 }
 
-//TODO utiliser promise : const ... = await...
 async function request(url, method, body = null) {
-    const promise = await fetch(url, {
+    let config = {
         method,
         headers: {
             'Content-Type': 'application/json'
         },
         body
-    })
-    //console.log(promise.text());
-    //.then(function (response) {
-    //    if (!response.ok)
-    //        throw new Error(response.text())
-    //    response.then(function (data) {
-    //        console.log(data);
-    //        return data
-    //    })
-    //}).catch(function (error) {
-    //    console.log(error)
-    //})
+    }
+
+    const api_token = localStorage.getItem('api-access-token');
+    if (api_token)
+        config.headers['Authorization'] = 'Bearer ' + api_token
+
+    const response = await fetch(url, config)
+    return await response.json()
 }
 
 export default {

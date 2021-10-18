@@ -43,11 +43,12 @@ Route::post('/login', function (Request $request) {
     if ($user) {
         $token =  $user->createToken('api-access-token')->plainTextToken;
         return response()->json([
-            'data' => [],
+            'data' => [
+                'token' => $token
+            ],
             'meta' => [
                 'success' => true,
-                'message' => "Logged in",
-                'token' => $token
+                'message' => "Logged in"
             ]
         ], 200);
     } else {
@@ -89,7 +90,7 @@ Route::post('/register', function (Request $request) {
     }
 });
 
-Route::middleware(['customErrors', 'auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('users', UserController::class);
     Route::apiResource('messages', MessageController::class);
     Route::apiResource('annonces', AnnonceController::class);

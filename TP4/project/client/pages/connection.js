@@ -4,6 +4,9 @@ const SERVER_URL = 'http://127.0.0.1:8000/api'
 
 let contaminated = false
 
+// save token in localStorage ?
+// need to know when user is authenticated
+
 document.querySelector('#registerButton').addEventListener('click', (e) => {
     e.preventDefault()
     document.querySelector('#connexion').classList.toggle('d-none')
@@ -12,7 +15,6 @@ document.querySelector('#registerButton').addEventListener('click', (e) => {
 
 document.querySelector('#connectionButton').addEventListener('click', (e) => {
     e.preventDefault()
-    console.log('djvd');
     document.querySelector('#register').classList.toggle('d-none')
     document.querySelector('#connexion').classList.toggle('d-none')
 })
@@ -21,11 +23,13 @@ document.querySelector('#contaminated').addEventListener('click', () => {
     contaminated = !contaminated
 })
 
-document.querySelector('#loginButton').addEventListener('click', (e) => {
+document.querySelector('#loginButton').addEventListener('click', async (e) => {
     e.preventDefault()
     let login = document.querySelector('#login').value
     let password = document.querySelector('#password').value
-    const data = httpRequest.post(SERVER_URL + '/login', JSON.stringify({ login, password }))
+    const { data } = await httpRequest.post(SERVER_URL + '/login', JSON.stringify({ login, password }))
+    localStorage.setItem('api-access-token', data.token)
+    
     // Call home page here
 })
 

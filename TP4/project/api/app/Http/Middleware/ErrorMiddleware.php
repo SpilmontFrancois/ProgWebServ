@@ -16,6 +16,6 @@ class ErrorMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        print_r($request);
+        return $next($request);
     }
 }
