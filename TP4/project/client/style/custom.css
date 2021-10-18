@@ -45,3 +45,18 @@ small {
 .cursor-p {
     cursor: pointer;
 }
+
+.bg-opaque {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#messageList::-webkit-scrollbar
+{
+	width: .5rem;
+}
+
+#messageList::-webkit-scrollbar-thumb
+{
+	border-radius: .5rem;
+	background-color: #0f222d;
+}

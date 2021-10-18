@@ -22,21 +22,24 @@
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white d-flex align-items-center">
+                    <a href='/TP4/project/client/map.html' id="a_home"
+                        class="nav-link text-white d-flex align-items-center w-100">
                         <img class="me-2" src="./assets/icons/map-marked-alt-solid.svg" height=20 width=20 />
                         Home - Map
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-white d-flex align-items-center">
+                    <a href='/TP4/project/client/profile.html' id="a_profil"
+                        class="nav-link text-white d-flex align-items-center w-100">
                         <img class="me-2" src="./assets/icons/user-solid.svg" height=20 width=20 />
-                        Profil
+                        Profile
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link active d-flex align-items-center">
+                    <a href='/TP4/project/client/messages.html' id="a_message"
+                        class="nav-link active d-flex align-items-center w-100">
                         <img class="me-2" src="./assets/icons/envelope-solid.svg" height=20 width=20 />
-                        Messenger
+                        Messages
                     </a>
                 </li>
             </ul>
@@ -52,10 +55,30 @@
 
 
         <div id='content' class="w-100 d-flex justify-content-end">
+            <!-- toggle show & d-none -->
+            <div id="modal" class="modal fade d-block bg-opaque d-none">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div id="preview" class="form-group mb-2">
+                                <label>Do you want to send this file ?</label>
+                                <br />
+                                <input id="filename" class="w-100" type="text" value="" disabled />
+                                <img id="uploadPreview" src="" />
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button id='noModal' type="button" class="btn btn-danger">No</button>
+                            <button id='yesModal' type="button" class="btn btn-primary">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="w-100 h-100 card mx-2 d-flex align-items-center">
                 <h2 class="m-0">User2</h2>
                 <div class="w-100 dropdown-divider"></div>
-                <div class="h-85 w-100 card m-2 scroll">
+                <div id="messageList" class="h-85 w-100 card m-2 scroll">
                     <div class="card m-2 p-2 bg-me">
                         <h4>User1</h4>
                         <p>Bla Bla Bla</p>
@@ -98,8 +121,13 @@
                     </div>
                 </div>
                 <div class="form-group w-100 d-flex align-items-center">
-                    <input type="text" class="form-control" placeholder="Enter message" />
-                    <img class="mx-2 cursor-p" src="./assets/icons/paper-plane-solid.svg" height=20 width=20 />
+                    <input id="messageContent" type="text" class="form-control" placeholder="Enter message" />
+                    <input type="file" id="input_file" class="d-none" />
+                    <button id="button_file" class="btn btn-secondary d-flex align-items-center"><img
+                            class="mx-2 cursor-p" src="./assets/icons/file-upload-solid.svg" height=20
+                            width=20 /></button>
+                    <button id="send" class="btn btn-primary d-flex align-items-center"><img class="mx-2 cursor-p"
+                            src="./assets/icons/paper-plane-solid.svg" height=20 width=20 /></button>
                 </div>
             </div>
 
@@ -132,7 +160,8 @@
             </div>
         </div>
     </div>
-
 </body>
+
+<script type="module" src='./pages/messages.js'></script>
 
 </html>

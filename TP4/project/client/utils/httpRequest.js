@@ -14,22 +14,26 @@ async function put(url, body) {
     return request(url, 'PUT', body)
 }
 
+//TODO utiliser promise : const ... = await...
 async function request(url, method, body = null) {
-    fetch(url, {
+    const promise = await fetch(url, {
         method,
         headers: {
             'Content-Type': 'application/json'
         },
         body
-    }).then(function (response) {
-        if (!response.ok)
-            throw new Error(response.text())
-        response.then(function (data) {
-            return data
-        })
-    }).catch(function (error) {
-        console.log(error)
     })
+    //console.log(promise.text());
+    //.then(function (response) {
+    //    if (!response.ok)
+    //        throw new Error(response.text())
+    //    response.then(function (data) {
+    //        console.log(data);
+    //        return data
+    //    })
+    //}).catch(function (error) {
+    //    console.log(error)
+    //})
 }
 
 export default {
