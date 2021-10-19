@@ -39,8 +39,10 @@ Route::post('/login', function (Request $request) {
     $login = $data['login'];
     $password = $data['password'];
 
-    $user = User::where('login', $login)->where('password', $password)->first();
-    if ($user) {
+    $user = User::where('login', $login)->first();
+    $pass = $user->password;
+
+    if ($user && password_verify($password, $pass)) {
         $token =  $user->createToken('api-access-token')->plainTextToken;
         return response()->json([
             'data' => [
@@ -80,11 +82,12 @@ Route::post('/register', function (Request $request) {
         $user = User::where('login', $data['login'])->first();
         $token =  $user->createToken('api-access-token')->plainTextToken;
         return response()->json([
-            'data' => [],
+            'data' => [
+                'token' => $token
+            ],
             'meta' => [
                 'success' => true,
-                'message' => "Registered",
-                'token' => $token
+                'message' => "Registered"
             ]
         ], 200);
     }

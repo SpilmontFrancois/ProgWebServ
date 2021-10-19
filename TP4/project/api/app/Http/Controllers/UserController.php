@@ -66,7 +66,14 @@ class UserController extends Controller
 
         DB::beginTransaction();
         try {
-            $user = User::create($input);
+            $user = User::create([
+                'firstname' => $input['firstname'],
+                'lastname' => $input['lastname'],
+                'login' => $input['login'],
+                'password' => password_hash($input['password'], PASSWORD_BCRYPT),
+                'coordinates' => $input['coordinates'],
+                'contaminated' => $input['contaminated']
+            ]);
             DB::commit();
         } catch (Exception $e) {
             Log::info($e->getMessage());
