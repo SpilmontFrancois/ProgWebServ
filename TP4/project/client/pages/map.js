@@ -107,3 +107,11 @@ function CenterControl(controlDiv, map) {
         map.setZoom(15)
     })
 }
+
+document.querySelector('#button_logout').addEventListener('click', (e) => {
+    e.preventDefault
+    localStorage.removeItem('api-access-token')
+    localStorage.removeItem('currentUser')
+    localStorage.removeItem('userData')
+    window.location.href = './../index.html'
+})

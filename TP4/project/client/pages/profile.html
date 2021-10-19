@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+
+<link rel="stylesheet" href="../style/bootstrap.css">
+<link rel="stylesheet" href="../style/custom.css">
+<link rel="stylesheet" href="../style/sidebar.css">
+<link rel="shortcut icon" href="../assets/logo.png">
+
+<body>
+    <div id='app' class="d-flex h-100">
+        <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-logo h-100 w-20 align-baseline">
+            <div class="d-flex align-items-center mb-3 mb-md-0 text-white text-decoration-none justify-content-center">
+                <img src="../assets/logo.png" class="w-50" />
+            </div>
+            <hr>
+            <ul class="nav nav-pills flex-column mb-auto">
+                <li class="nav-item">
+                    <a href='/TP4/project/client/pages/map.html' id="a_home"
+                        class="nav-link text-white d-flex align-items-center w-100">
+                        <img class="me-2" src="../assets/icons/map-marked-alt-solid.svg" height=20 width=20 />
+                        Home - Map
+                    </a>
+                </li>
+                <li>
+                    <a href='/TP4/project/client/pages/profile.html' id="a_profil"
+                        class="nav-link active d-flex align-items-center w-100">
+                        <img class="me-2" src="../assets/icons/user-solid.svg" height=20 width=20 />
+                        Profile
+                    </a>
+                </li>
+                <li>
+                    <a href='/TP4/project/client/pages/messages.html' id="a_message"
+                        class="nav-link text-white d-flex align-items-center w-100">
+                        <img class="me-2" src="../assets/icons/envelope-solid.svg" height=20 width=20 />
+                        Messages
+                    </a>
+                </li>
+            </ul>
+            <hr>
+            <div class="d-flex justify-content-end">
+                <div class="d-flex align-items-center text-white text-decoration-none" aria-expanded="false">
+                    <button id="button_logout" type="button" class="btn btn-danger d-flex align-items-center"><img class="me-2"
+                            src="../assets/icons/sign-out-alt-solid.svg" height=20 width=20 />Logout</button>
+                </div>
+            </div>
+        </div>
+
+        <div id='content' class="w-80 px-4">
+            <div class="bg-logo w-100 mt-4 p-4 rounded d-flex justify-content-center text-white">
+                <label id='header' class="fs-1 "></label>
+            </div>
+
+            <div class="bg-white w-100 mt-4 p-4 rounded">
+                <div class="form-group row w-100">
+                    <label class="col-sm-3 col-form-label">Firstname</label>
+                    <div class="col-sm-7">
+                        <input id="firstname" type="text" class="form-control" placeholder="Firstname">
+                    </div>
+                </div>
+                <div class="form-group row w-100 mt-2">
+                    <label class="col-sm-3 col-form-label">Lastname</label>
+                    <div class="col-sm-7">
+                        <input id="lastname" type="text" class="form-control" placeholder="Lastname">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white w-100 mt-4 p-4 rounded" id="passwordId">
+                <label class="m-0">Password</label>
+                <div class="d-flex flex-auto">
+                    <input id="oldpass" class="form-control mt-1 me-1" type="password" placeholder="Old password" />
+                    <input id="newpass" class="form-control mt-1 me-1" type="password" placeholder="New password" />
+                    <input id="confirmpass" class="form-control mt-1" type="password" placeholder="Confirm password" />
+                    <small id='errorMessage' class="d-none">Les mots de passe ne sont pas identiques.</small>
+                </div>
+            </div>
+
+            <div class="bg-white w-100 mt-4 p-4 rounded d-flex justify-content-between">
+                <label class="m-0">Contaminated</label>
+                <div class="form-check form-switch w-20 d-flex justify-content-end">
+                    <input id="contaminated" class="form-check-input h-100 w-rem-3" type="checkbox" />
+                </div>
+
+            </div>
+
+            <div class="w-100 mt-4 d-flex justify-content-center">
+                <button id='confirmButton' type="button" class="btn btn-primary mx-1">Confirm changes</button>
+                <button id='cancelButton' type="button" class="btn btn-danger mx-1">Cancel changes</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="module" src="./profile.js"></script>
+</html>

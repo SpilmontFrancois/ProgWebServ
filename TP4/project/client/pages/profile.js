@@ -1,111 +1,75 @@
 import httpRequest from './../utils/httpRequest.js'
 
-const SERVER_URL = 'http://127.0.0.1:8000'
+const SERVER_URL = 'http://127.0.0.1:8000/api'
 
-export function render() {
-    document.querySelector('#content').classList.remove('d-flex', 'justify-content-end')
-    document.querySelector('#content').innerHTML = `
-        <div class="bg-logo w-100 mt-4 p-4 rounded d-flex justify-content-center text-white">
-            <label class="fs-1 ">pseudo's Profile</label>
-        </div>
+let contaminated = false;
+let userData = JSON.parse(localStorage.getItem('userData'))
 
-        <div class="bg-white w-100 mt-4 p-4 rounded">
-            <div class="form-group row w-100">
-                <label class="col-sm-3 col-form-label">Firstname</label>
-                <div class="col-sm-7">
-                    <input id="input_Firstname" type="text" class="form-control" placeholder="Firstname">
-                </div>
-            </div>
-            <div class="form-group row w-100 mt-2">
-                <label class="col-sm-3 col-form-label">Lastname</label>
-                <div class="col-sm-7">
-                    <input id="input_Lastname" type="text" class="form-control" placeholder="Lastname">
-                </div>
-            </div>
-        </div>
-
-        <div class="bg-white w-100 mt-4 p-4 rounded" id="passwordId">
-            <label class="m-0">Password</label>
-            <div class="d-flex flex-auto">
-                <input id="input_OldPass" class="form-control mt-1 me-1" type="password" placeholder="Old password" />
-                <input id="input_NewPass" class="form-control mt-1 me-1" type="password" placeholder="New password" />
-                <input id="input_ConfirmPass" class="form-control mt-1" type="password" placeholder="Confirm password" />
-            </div>
-        </div>
-
-        <div class="bg-white w-100 mt-4 p-4 rounded d-flex justify-content-between">
-            <label class="m-0">Contaminated</label>
-            <div class="form-check form-switch w-20 d-flex justify-content-end">
-                <input id="checkbox_Contaminated" class="form-check-input h-100 w-rem-3" type="checkbox" />
-            </div>
-        </div>
-        <div class="w-100 mt-4 d-flex justify-content-center">
-            <button id="button_Register" type="button" class="btn btn-primary mx-1">Confirm changes</button>
-            <button id="button_Cancel" type="button" class="btn btn-danger mx-1">Cancel changes</button>
-        </div>
-    `
+if (!userData) {
+    localStorage.setItem('userData', 'init')
+    let { data } = await httpRequest.get(SERVER_URL + '/users')
+    let index = data.findIndex((el) => el.login === localStorage.getItem('currentUser'))
+    localStorage.setItem('userData', JSON.stringify(data[index]))
 }
 
-export function addEvent() {
+document.querySelector('#header').innerHTML = localStorage.getItem('currentUser') + '\'s Profile'
+document.querySelector('#firstname').value = userData.firstname
+document.querySelector('#lastname').value = userData.lastname
+document.querySelector('#contaminated').checked = userData.contaminated
 
-    let contaminated = false; //il faudra reprendre en bdd la valeur du contaminated du profil courant
+document.querySelector('#contaminated').addEventListener('click', (e) => {
+    contaminated = !contaminated
+})
 
-    document.querySelector('#button_Register').addEventListener('click', (e) => {
-        contaminated = !contaminated
-    })
+document.querySelector('#confirmButton').addEventListener('click', async (e) => {
+    e.preventDefault()
+    let firstname = document.querySelector('#firstname').value
+    let lastname = document.querySelector('#lastname').value
+    let old_pass = document.querySelector('#oldpass').value
+    let new_pass = document.querySelector('#newpass').value
+    let confirm_pass = document.querySelector('#confirmpass').value
 
-    document.querySelector('#button_Register').addEventListener('click', (e) => {
-        e.preventDefault()
+    if (contaminated)
+        contaminated = 1
+    else
+        contaminated = 0
 
-        let firstname = document.querySelector('#input_Firstname').value
-        let lastname = document.querySelector('#input_Lastname').value
-        let old_pass = document.querySelector('#input_OldPass').value
-        let new_pass = document.querySelector('#input_NewPass').value
-        let confirm_pass = document.querySelector('#input_ConfirmPass').value
-        if (contaminated) {
-            contaminated = 1
-        }
-        else {
-            contaminated = 0
-        }
+    let json = {}
+    if (userData.firstname !== firstname)
+        json['firstname'] = firstname
 
-        /**
-        * il faut tester que les champs ne soient pas vide et qu'ils aient bien été modifiée (au moins 1 doit être modifié)
-        * si un champs est vide => message d'erreur rouge en mode "aucun champs ne doit être vide"
-        * si aucun champs n'est modifié => on quitte bien la page mais on evite la modification en bdd (optimisation)
-       */
+    if (userData.lastname !== lastname)
+        json['lastname'] = lastname
 
-        //vérifier si le old password correspond au mot de passe du profil en bdd
+    if (userData.contaminated !== contaminated)
+        json['contaminated'] = contaminated
 
+    if (new_pass !== confirm_pass || new_pass === '')
+        document.querySelector('#errorMessage').classList.remove('d-none')
+    else
+        json['password'] = new_pass
 
+    if (json !== {}) {
+        let { data } = await httpRequest.put(SERVER_URL + '/users/' + userData.id, JSON.stringify(json))
+        console.log(data);
+    }
+    // Bug : method not allowed
+})
 
-        if (new_pass == confirm_pass) {
-            //modification du mot de passe en bdd
-        }
-        else {
-            //message d'erreur en mode "le mot de passe de confirmation ne correspond pas au nouveauu mot de passe"
-            let div = document.querySelector('#passwordId')
-            let res = document.createElement('small')
-            res.innerHTML = `Les mots de passe ne sont pas identiques.`
-            console.log(res)
-            div.appendChild(res)
-        }
-    })
+document.querySelector('#cancelButton').addEventListener('click', (e) => {
+    e.preventDefault
+    document.querySelector('#firstname').value = ''
+    document.querySelector('#lastname').value = ''
+    document.querySelector('#oldpass').value = ''
+    document.querySelector('#newpass').value = ''
+    document.querySelector('#confirmpass').value = ''
+    document.querySelector('#contaminated').checked = false
+})
 
-    document.querySelector('#button_Cancel').addEventListener('click', (e) => {
-        e.preventDefault
-
-        // => quitter la page sans modification // Pas besoin de quiiter juste reset les champs
-
-        document.querySelector('#input_Firstname').value = ''
-        document.querySelector('#input_Lastname').value = ''
-        document.querySelector('#input_OldPass').value = ''
-        document.querySelector('#input_NewPass').value = ''
-        document.querySelector('#input_ConfirmPass').value = ''
-    })
-}
-
-export default {
-    render,
-    addEvent
-}
+document.querySelector('#button_logout').addEventListener('click', (e) => {
+    e.preventDefault
+    localStorage.removeItem('api-access-token')
+    localStorage.removeItem('currentUser')
+    localStorage.removeItem('userData')
+    window.location.href = './../index.html'
+})

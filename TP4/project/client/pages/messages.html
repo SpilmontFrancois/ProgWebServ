@@ -8,37 +8,37 @@
     <title>Message</title>
 </head>
 
-<link rel="stylesheet" href="style/bootstrap.css">
-<link rel="stylesheet" href="style/custom.css">
-<link rel="stylesheet" href="style/sidebar.css">
-<link rel="shortcut icon" href="./assets/logo.png">
+<link rel="stylesheet" href="../style/bootstrap.css">
+<link rel="stylesheet" href="../style/custom.css">
+<link rel="stylesheet" href="../style/sidebar.css">
+<link rel="shortcut icon" href="../assets/logo.png">
 
 <body>
     <div id='app' class="d-flex h-100">
         <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-logo h-100 w-20 align-baseline">
             <div class="d-flex align-items-center mb-3 mb-md-0 text-white text-decoration-none justify-content-center">
-                <img src="./assets/logo.png" class="w-50" />
+                <img src="../assets/logo.png" class="w-50" />
             </div>
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href='/TP4/project/client/map.html' id="a_home"
+                    <a href='/TP4/project/client/pages/map.html' id="a_home"
                         class="nav-link text-white d-flex align-items-center w-100">
-                        <img class="me-2" src="./assets/icons/map-marked-alt-solid.svg" height=20 width=20 />
+                        <img class="me-2" src="../assets/icons/map-marked-alt-solid.svg" height=20 width=20 />
                         Home - Map
                     </a>
                 </li>
                 <li>
-                    <a href='/TP4/project/client/profile.html' id="a_profil"
+                    <a href='/TP4/project/client/pages/profile.html' id="a_profil"
                         class="nav-link text-white d-flex align-items-center w-100">
-                        <img class="me-2" src="./assets/icons/user-solid.svg" height=20 width=20 />
+                        <img class="me-2" src="../assets/icons/user-solid.svg" height=20 width=20 />
                         Profile
                     </a>
                 </li>
                 <li>
-                    <a href='/TP4/project/client/messages.html' id="a_message"
+                    <a href='/TP4/project/client/pages/messages.html' id="a_message"
                         class="nav-link active d-flex align-items-center w-100">
-                        <img class="me-2" src="./assets/icons/envelope-solid.svg" height=20 width=20 />
+                        <img class="me-2" src="../assets/icons/envelope-solid.svg" height=20 width=20 />
                         Messages
                     </a>
                 </li>
@@ -46,16 +46,13 @@
             <hr>
             <div class="d-flex justify-content-end">
                 <div class="d-flex align-items-center text-white text-decoration-none" aria-expanded="false">
-                    <button type="button" class="btn btn-danger d-flex align-items-center"><img class="me-2"
-                            src="./assets/icons/sign-out-alt-solid.svg" height=20 width=20 />Logout</button>
+                    <button id="button_logout" type="button" class="btn btn-danger d-flex align-items-center"><img class="me-2"
+                            src="../assets/icons/sign-out-alt-solid.svg" height=20 width=20 />Logout</button>
                 </div>
             </div>
         </div>
 
-
-
         <div id='content' class="w-100 d-flex justify-content-end">
-            <!-- toggle show & d-none -->
             <div id="modal" class="modal fade d-block bg-opaque d-none">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
@@ -70,6 +67,69 @@
                         <div class="modal-footer">
                             <button id='noModal' type="button" class="btn btn-danger">No</button>
                             <button id='yesModal' type="button" class="btn btn-primary">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="popUpMessage" class="modal fade d-block bg-opaque d-none">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Start to chat with a friend</h5>
+                                <button type="button" class="btn close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group mb-2">
+                                <label>Username</label>
+                                <input id='' type="text" class="form-control" placeholder="Enter username">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
+            <div id="popUpConversation" class="modal fade d-block bg-opaque d-none">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Join conversation</h5>
+                            <button type="button" class="btn close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group mb-2">
+                                <label>Conversation name</label>
+                                <input id='' type="text" class="form-control" placeholder="name">
+                            </div>
+                        </div>
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Or create a new one</h5>
+                        </div>
+                            
+                        <div class="modal-footer">
+                            <button type="button" class="btn close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group mb-2">
+                                <label>Conversation name</label>
+                                <input id='' type="text" class="form-control" placeholder="name">
+                                <button type="button" class="btn btn-primary close">Join</button>
+                            </div>
+                            <div class="form-group mb-2">
+                                <label>Friend username</label>
+                                <input id='' type="text" class="form-control" placeholder="user1, user2">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary close">Create</button>
                         </div>
                     </div>
                 </div>
@@ -124,18 +184,23 @@
                     <input id="messageContent" type="text" class="form-control" placeholder="Enter message" />
                     <input type="file" id="input_file" class="d-none" />
                     <button id="button_file" class="btn btn-secondary d-flex align-items-center"><img
-                            class="mx-2 cursor-p" src="./assets/icons/file-upload-solid.svg" height=20
+                            class="mx-2 cursor-p" src="../assets/icons/file-upload-solid.svg" height=20
                             width=20 /></button>
                     <button id="send" class="btn btn-primary d-flex align-items-center"><img class="mx-2 cursor-p"
-                            src="./assets/icons/paper-plane-solid.svg" height=20 width=20 /></button>
+                            src="../assets/icons/paper-plane-solid.svg" height=20 width=20 /></button>
                 </div>
             </div>
 
             <div class="d-flex flex-column align-items-stretch flex-shrink-0 w-25 bg-logo">
                 <div class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
-                    <img class="me-2" src="./assets/icons/envelope-solid.svg" height=20 width=20 />
+                    <img class="me-2 " src="../assets/icons/envelope-solid.svg" height=20 width=20 />
                     <span class="fs-5 fw-semibold text-white">Messages</span>
                 </div>
+                <div class="d-flex align-items-right flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+                    <img class="me-2 " id="createConv" src="../assets/icons/edit-regular.svg" height=25 width=30 />
+                    <img class="me-2 " id="joinConv" src="../assets/icons/group-plus.svg" height=30 width=30 />
+                </div>
+
                 <div class="list-group list-group-flush scrollarea m-2 mb-0 rounded">
                     <a href="#" class="list-group-item list-group-item-action py-3 lh-tight bg-logo text-white"
                         aria-current="true">
@@ -162,6 +227,6 @@
     </div>
 </body>
 
-<script type="module" src='./pages/messages.js'></script>
+<script type="module" src='./messages.js'></script>
 
 </html>

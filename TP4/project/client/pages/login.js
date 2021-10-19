@@ -4,9 +4,6 @@ const SERVER_URL = 'http://127.0.0.1:8000/api'
 
 let contaminated = false
 
-// save token in localStorage ?
-// need to know when user is authenticated
-
 document.querySelector('#registerButton').addEventListener('click', (e) => {
     e.preventDefault()
     document.querySelector('#connexion').classList.toggle('d-none')
@@ -29,16 +26,17 @@ document.querySelector('#loginButton').addEventListener('click', async (e) => {
     let password = document.querySelector('#password').value
     const { data } = await httpRequest.post(SERVER_URL + '/login', JSON.stringify({ login, password }))
     localStorage.setItem('api-access-token', data.token)
-    
-    // Call home page here
+    localStorage.setItem('currentUser', login)
+    window.location.href = './map.html' 
 })
 
-document.querySelector('#registerButton2').addEventListener('click', (e) => {
+document.querySelector('#registerButton2').addEventListener('click', async (e) => {
     e.preventDefault()
+    document.querySelector('#errorMessage').classList.add('d-none')
     let firstname = document.querySelector('#firstname').value
     let lastname = document.querySelector('#lastname').value
-    let username = document.querySelector('#username').value
-    let pass = document.querySelector('#pass').value
+    let login = document.querySelector('#username').value
+    let password = document.querySelector('#pass').value
     let pass2 = document.querySelector('#pass2').value
     let coordinates = JSON.stringify({ lat: 46.727663, lng: -14.410187 })
     if (contaminated)
@@ -46,19 +44,12 @@ document.querySelector('#registerButton2').addEventListener('click', (e) => {
     else
         contaminated = 0
 
-    let data
-
-    if (pass === pass2) {
-        // CHANGE HERE
-        data = httpRequest.post(SERVER_URL + '/register', { firstname, lastname, username, pass, coordinates, contaminated })
-        console.log(data);
-        // Call home page here
+    if (password === pass2) {
+        const { data } = await httpRequest.post(SERVER_URL + '/register', JSON.stringify({ firstname, lastname, login, password, coordinates, contaminated }))
+        localStorage.setItem('api-access-token', data.token)
+        localStorage.setItem('currentUser', login)
+        window.location.href = './map.html'
     }
-    else {
-        let div = document.querySelector('#div_inscription')
-        let res = document.createElement('small')
-        res.innerHTML = `Les mots de passe ne sont pas identiques.`
-        div.appendChild(res)
-    }
-
+    else
+        document.querySelector('#errorMessage').classList.remove('d-none')
 })

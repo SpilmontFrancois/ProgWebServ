@@ -1,10 +1,9 @@
 import httpRequest from '../utils/httpRequest.js'
 
-const SERVER_URL = 'http://127.0.0.1:8000'
+const SERVER_URL = 'http://127.0.0.1:8000/api'
 
 document.querySelector('#button_file').addEventListener('click', () => {
     document.querySelector('#input_file').click()
-    console.log(document.querySelector('#input_file'))
 })
 
 document.querySelector('#input_file').addEventListener('change', (e) => {
@@ -38,17 +37,49 @@ document.querySelector('#yesModal').addEventListener('click', () => {
     document.querySelector('#modal').classList.remove('show')
 })
 
-document.querySelector('#send').addEventListener('click', () => {
+document.querySelector('#send').addEventListener('click', async () => {
     // TODO : display messages received in the good color
-    addMessage(document.querySelector('#messageContent').value, 'Me')
-    document.querySelector('#messageContent').value = ''
+    const { data } = await httpRequest.get(SERVER_URL + '/users')
+    console.log(data);
+    //addMessage(document.querySelector('#messageContent').value, 'Me')
+    //document.querySelector('#messageContent').value = ''
 })
 
-function addMessage(txt, user) {
+document.querySelector('#createConv').addEventListener('click', () => {
+    document.querySelector('#popUpMessage').classList.add('show')
+    document.querySelector('#popUpMessage').classList.remove('d-none') 
+})
+
+document.querySelector('#joinConv').addEventListener('click', () => {
+    document.querySelector('#popUpConversation').classList.add('show')
+    document.querySelector('#popUpConversation').classList.remove('d-none') 
+})
+let close = document.getElementsByClassName('close')
+Array.prototype.forEach.call(close, function(el) {
+    el.addEventListener('click', () => {
+        console.log('close')
+        document.querySelector('#popUpMessage').classList.remove('show')
+        document.querySelector('#popUpMessage').classList.add('d-none') 
+        document.querySelector('#popUpConversation').classList.remove('show')
+        document.querySelector('#popUpConversation').classList.add('d-none') 
+    });
+});
+
+
+function addMessage(content, user) {
+    // Save message in database
     document.querySelector('#messageList').innerHTML += `
     <div class="card m-2 p-2 bg-me">
         <h4>${user}</h4>
-        <p>${txt}</p>
+        <p>${content}</p>
     </div>
     `
 }
+
+document.querySelector('#button_logout').addEventListener('click', (e) => {
+    e.preventDefault
+    localStorage.removeItem('api-access-token')
+    localStorage.removeItem('currentUser')
+    localStorage.removeItem('userData')
+    window.location.href = './../index.html'
+})
