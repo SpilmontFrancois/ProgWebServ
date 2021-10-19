@@ -46,7 +46,8 @@ Route::post('/login', function (Request $request) {
         $token =  $user->createToken('api-access-token')->plainTextToken;
         return response()->json([
             'data' => [
-                'token' => $token
+                'token' => $token,
+                'expires_in' => time() + 10 * 60
             ],
             'meta' => [
                 'success' => true,
@@ -83,7 +84,8 @@ Route::post('/register', function (Request $request) {
         $token =  $user->createToken('api-access-token')->plainTextToken;
         return response()->json([
             'data' => [
-                'token' => $token
+                'token' => $token,
+                'expires_in' => time() + 10 * 60
             ],
             'meta' => [
                 'success' => true,

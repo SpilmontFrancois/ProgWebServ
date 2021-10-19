@@ -27,7 +27,9 @@ document.querySelector('#loginButton').addEventListener('click', async (e) => {
     const { data } = await httpRequest.post(SERVER_URL + '/login', JSON.stringify({ login, password }))
     localStorage.setItem('api-access-token', data.token)
     localStorage.setItem('currentUser', login)
-    window.location.href = './map.html' 
+    localStorage.setItem('expireToken', data.expires_in)
+    localStorage.setItem('userData', 'init')
+    window.location.href = './map.html'
 })
 
 document.querySelector('#registerButton2').addEventListener('click', async (e) => {
@@ -48,6 +50,8 @@ document.querySelector('#registerButton2').addEventListener('click', async (e) =
         const { data } = await httpRequest.post(SERVER_URL + '/register', JSON.stringify({ firstname, lastname, login, password, coordinates, contaminated }))
         localStorage.setItem('api-access-token', data.token)
         localStorage.setItem('currentUser', login)
+        localStorage.setItem('expireToken', data.expires_in)
+        localStorage.setItem('userData', 'init')
         window.location.href = './map.html'
     }
     else

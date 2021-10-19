@@ -1,6 +1,9 @@
 const defaultPoint = { lat: 46.727663, lng: -14.410187 }
 let userPos = defaultPoint
 
+if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
+    window.location.href = './login.html'
+
 function initMap() {
     const map = new google.maps.Map(document.getElementById("content"), {
         zoom: 15,

@@ -2,6 +2,9 @@ import httpRequest from '../utils/httpRequest.js'
 
 const SERVER_URL = 'http://127.0.0.1:8000/api'
 
+if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
+    window.location.href = './login.html'
+
 document.querySelector('#button_file').addEventListener('click', () => {
     document.querySelector('#input_file').click()
 })
@@ -47,21 +50,21 @@ document.querySelector('#send').addEventListener('click', async () => {
 
 document.querySelector('#createConv').addEventListener('click', () => {
     document.querySelector('#popUpMessage').classList.add('show')
-    document.querySelector('#popUpMessage').classList.remove('d-none') 
+    document.querySelector('#popUpMessage').classList.remove('d-none')
 })
 
 document.querySelector('#joinConv').addEventListener('click', () => {
     document.querySelector('#popUpConversation').classList.add('show')
-    document.querySelector('#popUpConversation').classList.remove('d-none') 
+    document.querySelector('#popUpConversation').classList.remove('d-none')
 })
 let close = document.getElementsByClassName('close')
-Array.prototype.forEach.call(close, function(el) {
+Array.prototype.forEach.call(close, function (el) {
     el.addEventListener('click', () => {
         console.log('close')
         document.querySelector('#popUpMessage').classList.remove('show')
-        document.querySelector('#popUpMessage').classList.add('d-none') 
+        document.querySelector('#popUpMessage').classList.add('d-none')
         document.querySelector('#popUpConversation').classList.remove('show')
-        document.querySelector('#popUpConversation').classList.add('d-none') 
+        document.querySelector('#popUpConversation').classList.add('d-none')
     });
 });
 

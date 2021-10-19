@@ -2,11 +2,32 @@ import httpRequest from './../utils/httpRequest.js'
 
 const SERVER_URL = 'http://127.0.0.1:8000/api'
 
-let contaminated = false;
-let userData = JSON.parse(localStorage.getItem('userData'))
+// Timer tous les x temps -> push coo
+/*if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            }
+            // push les nouvelles coo
+            console.log(pos);
+        },
+        () => {
+            // Browser has geolocation --> fail
+            // laisser les anciennes values
+        }
+    )
+}*/
+if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
+    window.location.href = './login.html'
 
-if (!userData) {
-    localStorage.setItem('userData', 'init')
+let contaminated = false
+let userData = 'init'
+if (localStorage.getItem('userData') && localStorage.getItem('userData') !== 'init')
+    userData = JSON.parse(localStorage.getItem('userData'))
+
+if (userData === 'init') {
     let { data } = await httpRequest.get(SERVER_URL + '/users')
     let index = data.findIndex((el) => el.login === localStorage.getItem('currentUser'))
     localStorage.setItem('userData', JSON.stringify(data[index]))
@@ -44,26 +65,25 @@ document.querySelector('#confirmButton').addEventListener('click', async (e) => 
     if (userData.contaminated !== contaminated)
         json['contaminated'] = contaminated
 
-    if (new_pass !== confirm_pass || new_pass === '')
+    if (new_pass !== confirm_pass)
         document.querySelector('#errorMessage').classList.remove('d-none')
-    else
+    else if (new_pass !== '')
         json['password'] = new_pass
 
-    if (json !== {}) {
-        let { data } = await httpRequest.put(SERVER_URL + '/users/' + userData.id, JSON.stringify(json))
-        console.log(data);
+    if (Object.keys(json).length !== 0 && json.constructor === Object) {
+        const { data } = await httpRequest.put(SERVER_URL + '/users/' + userData.id, JSON.stringify(json))
+        localStorage.setItem('userData', 'init')
     }
-    // Bug : method not allowed
 })
 
 document.querySelector('#cancelButton').addEventListener('click', (e) => {
     e.preventDefault
-    document.querySelector('#firstname').value = ''
-    document.querySelector('#lastname').value = ''
+    document.querySelector('#firstname').value = userData.firstname
+    document.querySelector('#lastname').value = userData.lastname
+    document.querySelector('#contaminated').checked = userData.contaminated
     document.querySelector('#oldpass').value = ''
     document.querySelector('#newpass').value = ''
     document.querySelector('#confirmpass').value = ''
-    document.querySelector('#contaminated').checked = false
 })
 
 document.querySelector('#button_logout').addEventListener('click', (e) => {
