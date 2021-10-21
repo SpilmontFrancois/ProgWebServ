@@ -46,8 +46,9 @@
             <hr>
             <div class="d-flex justify-content-end">
                 <div class="d-flex align-items-center text-white text-decoration-none" aria-expanded="false">
-                    <button id="button_logout" type="button" class="btn btn-danger d-flex align-items-center"><img class="me-2"
-                            src="../assets/icons/sign-out-alt-solid.svg" height=20 width=20 />Logout</button>
+                    <button id="button_logout" type="button" class="btn btn-danger d-flex align-items-center"><img
+                            class="me-2" src="../assets/icons/sign-out-alt-solid.svg" height=20
+                            width=20 />Logout</button>
                 </div>
             </div>
         </div>
@@ -77,59 +78,64 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">Start to chat with a friend</h5>
-                                <button type="button" class="btn close">
+                            <button type="button" class="btn close">
+                                &times;
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group mb-2">
                                 <label>Username</label>
-                                <input id='' type="text" class="form-control" placeholder="Enter username">
+                                <input id='username' type="text" class="form-control" placeholder="Enter username">
+                            </div>
+                            <div class="form-group mb-2">
+                                <label>Message</label>
+                                <input id='message' type="text" class="form-control" placeholder="Enter message">
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button id='newConv' type="button" class="btn btn-primary">Send message</button>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
 
             <div id="popUpConversation" class="modal fade d-block bg-opaque d-none">
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Join conversation</h5>
+                            <h5 class="modal-title" id="exampleModalLongTitle">Join tion</h5>
                             <button type="button" class="btn close">
+                                &times;
                             </button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group mb-2">
-                                <label>Conversation name</label>
-                                <input id='' type="text" class="form-control" placeholder="name">
+                                <label>Conversation ID</label>
+                                <input id='groupID' type="text" class="form-control" placeholder="ID">
+                                <div class="modal-footer">
+                                    <button id='joinGroup' type="button" class="btn btn-primary">Join</button>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLongTitle">Or create a new one</h5>
                         </div>
-                            
-                        <div class="modal-footer">
-                            <button type="button" class="btn close"></button>
-                        </div>
                         <div class="modal-body">
                             <div class="form-group mb-2">
                                 <label>Conversation name</label>
-                                <input id='' type="text" class="form-control" placeholder="name">
-                                <button type="button" class="btn btn-primary close">Join</button>
+                                <input id='' type="text" class="form-control" placeholder="Enter name">
+                                
                             </div>
                             <div class="form-group mb-2">
                                 <label>Friend username</label>
-                                <input id='' type="text" class="form-control" placeholder="user1, user2">
+                                <input id='lUser' type="text" class="form-control" placeholder="user1, user2">
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary close">Create</button>
+                            <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
+                            <button id='createGroup' type="button" class="btn btn-primary">Create</button>
                         </div>
                     </div>
                 </div>
@@ -225,8 +231,9 @@
             </div>
         </div>
     </div>
+    <script type="module" src='./messages.js'></script>
+
 </body>
 
-<script type="module" src='./messages.js'></script>
 
 </html>

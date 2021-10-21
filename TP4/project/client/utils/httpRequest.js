@@ -28,7 +28,7 @@ async function request(url, method, body = null) {
         config.headers['Authorization'] = 'Bearer ' + api_token
 
     const response = await fetch(url, config)
-    return await response.json()
+    return response.json()
 }
 
 export default {
