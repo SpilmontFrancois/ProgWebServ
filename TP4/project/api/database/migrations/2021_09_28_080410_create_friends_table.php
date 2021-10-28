@@ -15,10 +15,10 @@ class CreateFriendsTable extends Migration
     {
         Schema::create('friends', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('user1');
-            $table->unsignedInteger('user2');
-            $table->foreign('user1')->references('id')->on('users');
-            $table->foreign('user2')->references('id')->on('users');
+            $table->string('user1');
+            $table->string('user2');
+            $table->foreign('user1')->references('login')->on('users');
+            $table->foreign('user2')->references('login')->on('users');
             $table->timestamps();
             $table->softDeletes();
         });

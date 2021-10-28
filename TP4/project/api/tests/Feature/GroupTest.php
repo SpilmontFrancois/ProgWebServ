@@ -8,10 +8,11 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 use App\Models\Group;
 use App\Models\User;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class GroupTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase, WithFaker, WithoutMiddleware;
 
     public function test_can_create_a_group()
     {

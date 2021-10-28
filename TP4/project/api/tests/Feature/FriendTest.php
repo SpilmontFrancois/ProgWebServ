@@ -8,10 +8,11 @@ use Illuminate\Foundation\Testing\WithFaker;
 
 use App\Models\User;
 use App\Models\Friend;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class FriendTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase, WithFaker, WithoutMiddleware;
 
     public function test_can_create_a_friend()
     {

@@ -7,10 +7,11 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 class UserTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase, WithFaker, WithoutMiddleware;
 
     public function test_can_create_an_user()
     {
@@ -20,7 +21,7 @@ class UserTest extends TestCase
             "firstname" => $user->firstname,
             "lastname" => $user->lastname,
             "login" => $user->login,
-            'password' => $user->password,
+            "password" => $user->password,
             "coordinates" => $user->coordinates,
             "contaminated" => $user->contaminated
         ]);
@@ -31,7 +32,7 @@ class UserTest extends TestCase
             "firstname" => $user->firstname,
             "lastname" => $user->lastname,
             "login" => $user->login,
-            'password' => $user->password,
+            "password" => $user->password,
             "coordinates" => $user->coordinates,
             "contaminated" => $user->contaminated
         ]);
