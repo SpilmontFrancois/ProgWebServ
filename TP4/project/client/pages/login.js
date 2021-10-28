@@ -2,6 +2,9 @@ import httpRequest from '../utils/httpRequest.js'
 
 const SERVER_URL = 'http://127.0.0.1:8000/api'
 
+localStorage.removeItem('api-access-token')
+localStorage.removeItem('expireToken')
+localStorage.setItem('messages', 'init')
 let contaminated = false
 
 document.querySelector('#registerButton').addEventListener('click', (e) => {
