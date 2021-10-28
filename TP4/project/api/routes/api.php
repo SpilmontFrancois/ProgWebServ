@@ -4,8 +4,10 @@ use App\Http\Controllers\AnnonceController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\User2groupController;
 use App\Http\Controllers\UserFriendController;
 use App\Models\User;
+use App\Models\User2group;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -97,6 +99,7 @@ Route::post('/register', function (Request $request) {
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::apiResource('users', UserController::class);
+    Route::apiResource('users2group', User2groupController::class);
     Route::apiResource('messages', MessageController::class);
     Route::apiResource('annonces', AnnonceController::class);
     Route::apiResource('groups', GroupController::class);
