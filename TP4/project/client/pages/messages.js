@@ -1,6 +1,9 @@
 import httpRequest from '../utils/httpRequest.js'
 
 const SERVER_URL = 'http://127.0.0.1:8000/api'
+window.onbeforeunload = function () {
+    return "Are you sure you want to leave?";
+}
 
 if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
     window.location.href = './login.html'
@@ -17,8 +20,17 @@ if (messages === 'init') {
 }
 
 let today = new Date()
-let lastFetchedMessages = new Date(JSON.parse(localStorage.getItem('lastFetchedMessages')))
-let diffMs = (today - lastFetchedMessages)
+let lftM = "";
+//à la première initialisation la date n'a paas forcèment le même format en fonction
+//du language du navigateur
+try {
+    let lftM = JSON.parse(localStorage.getItem('lastFetchedMessages'))    
+} catch (error) {
+    let lftM = "2021-10-31T22:05:34.758Z"
+}
+let lastFetchedMessages = new Date(lftM)
+
+    let diffMs = (today - lastFetchedMessages)
 let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000)
 if (diffMins > 1) {
     localStorage.setItem('lastFetchedMessages', JSON.stringify(new Date()))
@@ -126,7 +138,7 @@ document.querySelector('#createConv').addEventListener('click', (e) => {
 
 document.querySelector('#newConv').addEventListener('click', (e) => {
     e.preventDefault()
-    let user1 = localStorage.getItem('userData').id
+    let user1 = localStorage.getItem('currentUser')
     let user2 = document.querySelector('#username').value
     let content = document.querySelector('#message').value
     addMessage(content, 'Me', user1, user2)
@@ -163,6 +175,7 @@ Array.prototype.forEach.call(close, function (el) {
 });
 
 async function addMessage(content, user, user1, user2) {
+    console.log(user, user1, user2);
     const { data } = await httpRequest.post(SERVER_URL + '/messages', JSON.stringify({ user1, user2, content }))
     document.querySelector('#messageList').innerHTML += `
     <div class="card m-2 p-2 bg-me">

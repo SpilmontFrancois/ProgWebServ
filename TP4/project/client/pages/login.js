@@ -6,10 +6,10 @@ window.onbeforeunload = function () {
     return "Are you sure you want to leave?";
 }
 
-localStorage.removeItem('api-access-token')
+//localStorage.removeItem('api-access-token')
 localStorage.removeItem('expireToken')
 localStorage.setItem('messages', 'init')
-localStorage.setItem('contaminated', 'init')
+localStorage.setItem('contaminated', '[]')
 localStorage.setItem('lastFetchedCoo', new Date(new Date() - 10 * 60000))
 localStorage.setItem('lastFetchedMessages', new Date(new Date() - 10 * 60000))
 let contaminated = false
