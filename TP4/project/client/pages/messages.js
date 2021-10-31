@@ -16,7 +16,14 @@ if (messages === 'init') {
     localStorage.setItem('messages', JSON.stringify(messages))
 }
 
-// faire en sorte d'update les messages tous les x temps
+let today = new Date()
+let lastFetchedMessages = new Date(JSON.parse(localStorage.getItem('lastFetchedMessages')))
+let diffMs = (today - lastFetchedMessages)
+let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000)
+if (diffMins > 1) {
+    localStorage.setItem('lastFetchedMessages', JSON.stringify(new Date()))
+    localStorage.setItem('messages', 'init')
+}
 
 let convos = []
 const unique = [...new Set(messages.map(item => item.user1 || item.user2))];

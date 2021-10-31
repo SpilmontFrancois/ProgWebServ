@@ -82,8 +82,6 @@
                         let today = new Date()
                         let lastFetchedCoo = new Date(JSON.parse(localStorage.getItem('lastFetchedCoo')))
                         let diffMs = (today - lastFetchedCoo)
-                        let diffDays = Math.floor(diffMs / 86400000)
-                        let diffHrs = Math.floor((diffMs % 86400000) / 3600000)
                         let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000)
                         if (diffMins > 5) {
                             localStorage.setItem('lastFetchedCoo', JSON.stringify(new Date()))
