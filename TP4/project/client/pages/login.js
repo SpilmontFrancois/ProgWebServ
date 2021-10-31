@@ -2,9 +2,16 @@ import httpRequest from '../utils/httpRequest.js'
 
 const SERVER_URL = 'http://127.0.0.1:8000/api'
 
+window.onbeforeunload = function () {
+    return "Are you sure you want to leave?";
+}
+
 localStorage.removeItem('api-access-token')
 localStorage.removeItem('expireToken')
 localStorage.setItem('messages', 'init')
+localStorage.setItem('contaminated', 'init')
+localStorage.setItem('lastFetchedCoo', new Date(new Date() - 10 * 60000))
+localStorage.setItem('lastFetchedMessages', new Date(new Date() - 10 * 60000))
 let contaminated = false
 
 document.querySelector('#registerButton').addEventListener('click', (e) => {
@@ -32,6 +39,16 @@ document.querySelector('#loginButton').addEventListener('click', async (e) => {
     localStorage.setItem('currentUser', login)
     localStorage.setItem('expireToken', data.expires_in)
     localStorage.setItem('userData', 'init')
+
+    let userData = 'init'
+    if (localStorage.getItem('userData') && localStorage.getItem('userData') !== 'init')
+        userData = JSON.parse(localStorage.getItem('userData'))
+
+    if (userData === 'init') {
+        let { data } = await httpRequest.get(SERVER_URL + '/users')
+        let index = data.findIndex((el) => el.login === localStorage.getItem('currentUser'))
+        localStorage.setItem('userData', JSON.stringify(data[index]))
+    }
     window.location.href = './map.html'
 })
 

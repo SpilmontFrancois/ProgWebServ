@@ -2,27 +2,11 @@ import httpRequest from './../utils/httpRequest.js'
 
 const SERVER_URL = 'http://127.0.0.1:8000/api'
 
-// Timer tous les x temps -> push coo
-/*if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-        (position) => {
-            const pos = {
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-            }
-            // push les nouvelles coo
-            console.log(pos);
-        },
-        () => {
-            // Browser has geolocation --> fail
-            // laisser les anciennes values
-        }
-    )
-}*/
 if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
     window.location.href = './login.html'
 
 let contaminated = false
+
 let userData = 'init'
 if (localStorage.getItem('userData') && localStorage.getItem('userData') !== 'init')
     userData = JSON.parse(localStorage.getItem('userData'))
@@ -71,7 +55,7 @@ document.querySelector('#confirmButton').addEventListener('click', async (e) => 
         json['password'] = new_pass
 
     if (Object.keys(json).length !== 0 && json.constructor === Object) {
-        const { data } = await httpRequest.put(SERVER_URL + '/users/' + userData.id, JSON.stringify(json))
+        await httpRequest.put(SERVER_URL + '/users/' + userData.id, JSON.stringify(json))
         localStorage.setItem('userData', 'init')
     }
 })

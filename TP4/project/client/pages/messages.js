@@ -10,26 +10,26 @@ if (localStorage.getItem('messages') && localStorage.getItem('messages') !== 'in
     messages = JSON.parse(localStorage.getItem('messages'))
 
 if (messages === 'init') {
-    let { data } = await httpRequest.get(SERVER_URL + '/messages')
+    const { data } = await httpRequest.get(SERVER_URL + '/messages')
     messages = data.filter((el) => el.user1 === localStorage.getItem('currentUser') || el.user2 === localStorage.getItem('currentUser'))
+    messages.reverse()
     localStorage.setItem('messages', JSON.stringify(messages))
 }
 
+let today = new Date()
+let lastFetchedMessages = new Date(JSON.parse(localStorage.getItem('lastFetchedMessages')))
+let diffMs = (today - lastFetchedMessages)
+let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000)
+if (diffMins > 1) {
+    localStorage.setItem('lastFetchedMessages', JSON.stringify(new Date()))
+    localStorage.setItem('messages', 'init')
+}
+
 let convos = []
-messages.forEach((el) => {
-    if (convos.length === 0)
-        convos.push(el)
-    else
-        convos.forEach((elem) => {
-            if (!Object.values(elem).includes(el.user1) || !Object.values(elem).includes(el.user2)) {
-                convos.push(el)
-                // remplacer le message stocké par le plus récent
-            }
-            // pb avec la date qui choppe le fuseau gmt alors qu'on est en gmt+2
-            console.log(new Date(Date.now()).getTime());
-            console.log(new Date(Date.parse(el.date)).getTime());
-            console.log(new Date(Date.now()).getTime() > new Date(Date.parse(el.date)).getTime());
-        })
+const unique = [...new Set(messages.map(item => item.user1 || item.user2))];
+unique.forEach((el) => {
+    if (el !== localStorage.getItem('currentUser'))
+        convos.push(messages[messages.findIndex((elem) => elem.user1 === el || elem.user2 === el)])
 })
 
 let user
@@ -41,7 +41,21 @@ convos.forEach((el) => {
 
     if (user.length > 10)
         user = user.substr(0, 10) + '...'
+
     addConvRightPanel(user, el.content, new Date(Date.parse(el.date)).toLocaleDateString())
+})
+
+convos.forEach((el) => {
+    if (el.user1 === localStorage.getItem('currentUser'))
+        user = el.user2
+    else
+        user = el.user1
+
+    document.querySelector('#' + user).addEventListener('click', () => {
+        console.log(user);
+        document.querySelector('#userName').innerHTML = user
+        document.querySelector('#messageList').innerHTML = ''
+    })
 })
 
 document.querySelector('#messageList').scrollTop = document.querySelector('#messageList').scrollHeight
@@ -88,11 +102,18 @@ document.querySelector('#yesModal').addEventListener('click', (e) => {
 document.querySelector('#send').addEventListener('click', (e) => {
     e.preventDefault()
     let user1 = localStorage.getItem('currentUser')
+    let userConv = ''
     // TODO : display messages received in the good color
     if (document.querySelector('#messageContent').value !== '') {
         // add other parameter to the function -> user 1 and user 2
         //addMessage(document.querySelector('#messageContent').value, 'Me', user1, user2)
         document.querySelector('#messageContent').value = ''
+        document.querySelector('#messageList').innerHTML += `
+        <div class="card m-2 p-2 bg-me">
+            <h4>${userConv}</h4>
+            <p>Bla Bla Bla</p>
+        </div>
+        `
         document.querySelector('#messageList').scrollTop = document.querySelector('#messageList').scrollHeight
     }
 })
@@ -154,7 +175,7 @@ async function addMessage(content, user, user1, user2) {
 function addConvRightPanel(username, lastMessage, date) {
     lastMessage = lastMessage.lenght > 40 ? lastMessage.subStr(0, 40) + '...' : lastMessage
     document.querySelector('#convoList').innerHTML += `
-    <div class="list-group list-group-flush scrollarea m-2 mb-0 rounded">
+    <div id=${username} class="list-group list-group-flush scrollarea m-2 mb-0 rounded">
         <a href="#" class="list-group-item list-group-item-action py-3 lh-tight bg-logo text-white">
             <div class="d-flex w-100 align-items-center justify-content-between">
                 <strong class="mb-1">${username}</strong>
@@ -164,7 +185,6 @@ function addConvRightPanel(username, lastMessage, date) {
         </a>
     </div>
     `
-
 }
 
 document.querySelector('#button_logout').addEventListener('click', (e) => {
