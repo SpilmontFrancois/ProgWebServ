@@ -34,11 +34,18 @@ function initMap() {
     let contaminatedIcon = { ...userIcon }
     contaminatedIcon.fillColor = 'red'
 
-    // /!\
-    const contaminatedMarker = new google.maps.Marker({
-        position: defaultPoint,
-        icon: contaminatedIcon,
-        map: map,
+    let markerTab = []
+    let contaminated = JSON.parse(localStorage.getItem('contaminated'))
+    contaminated.forEach((el) => {
+        markerTab.push(JSON.parse(el.coordinates))
+    })
+
+    markerTab.forEach((coo) => {
+        const contaminatedMarker = new google.maps.Marker({
+            position: coo,
+            icon: contaminatedIcon,
+            map: map,
+        })
     })
 
     // Try HTML5 geolocation.

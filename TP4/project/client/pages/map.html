@@ -23,19 +23,22 @@
             <hr>
             <ul class="nav nav-pills flex-column mb-auto">
                 <li class="nav-item">
-                    <a href='/TP4/project/client/pages/map.html' id="a_home" class="nav-link active d-flex align-items-center w-100">
+                    <a href='/TP4/project/client/pages/map.html' id="a_home"
+                        class="nav-link active d-flex align-items-center w-100">
                         <img class="me-2" src="../assets/icons/map-marked-alt-solid.svg" height=20 width=20 />
                         Home - Map
                     </a>
                 </li>
                 <li>
-                    <a href='/TP4/project/client/pages/profile.html' id="a_profil" class="nav-link text-white d-flex align-items-center w-100">
+                    <a href='/TP4/project/client/pages/profile.html' id="a_profil"
+                        class="nav-link text-white d-flex align-items-center w-100">
                         <img class="me-2" src="../assets/icons/user-solid.svg" height=20 width=20 />
                         Profile
                     </a>
                 </li>
                 <li>
-                    <a href='/TP4/project/client/pages/messages.html' id="a_message" class="nav-link text-white d-flex align-items-center w-100">
+                    <a href='/TP4/project/client/pages/messages.html' id="a_message"
+                        class="nav-link text-white d-flex align-items-center w-100">
                         <img class="me-2" src="../assets/icons/envelope-solid.svg" height=20 width=20 />
                         Messages
                     </a>
@@ -44,15 +47,52 @@
             <hr>
             <div class="d-flex justify-content-end">
                 <div class="d-flex align-items-center text-white text-decoration-none" aria-expanded="false">
-                    <button id="button_logout" type="button" class="btn btn-danger d-flex align-items-center"><img class="me-2"
-                            src="../assets/icons/sign-out-alt-solid.svg" height=20 width=20 />Logout</button>
+                    <button id="button_logout" type="button" class="btn btn-danger d-flex align-items-center"><img
+                            class="me-2" src="../assets/icons/sign-out-alt-solid.svg" height=20
+                            width=20 />Logout</button>
                 </div>
             </div>
         </div>
         <script src='./map.js'></script>
         <div id='content' class="w-100 d-flex justify-content-end">
         </div>
+        <script type="module">
+            import httpRequest from '../utils/httpRequest.js'
+            const SERVER_URL = 'http://127.0.0.1:8000/api'
 
+            let contaminated = 'init'
+            if (localStorage.getItem('contaminated') && localStorage.getItem('contaminated') !== 'init')
+                contaminated = JSON.parse(localStorage.getItem('contaminated'))
+
+            if (contaminated === 'init') {
+                const { data } = await httpRequest.get(SERVER_URL + '/users')
+                contaminated = data.filter((el) => el.contaminated === 1)
+                localStorage.setItem('contaminated', JSON.stringify(contaminated))
+            }
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        }
+                        let id = JSON.parse(localStorage.getItem('userData')).id
+
+                        let today = new Date()
+                        let lastFetchedCoo = new Date(JSON.parse(localStorage.getItem('lastFetchedCoo')))
+                        let diffMs = (today - lastFetchedCoo)
+                        let diffDays = Math.floor(diffMs / 86400000)
+                        let diffHrs = Math.floor((diffMs % 86400000) / 3600000)
+                        let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000)
+                        if (diffMins > 5) {
+                            localStorage.setItem('lastFetchedCoo', JSON.stringify(new Date()))
+                            await httpRequest.put(SERVER_URL + '/users/' + id, JSON.stringify({ coordinates: JSON.stringify(pos) }))
+                        }
+                    }
+                )
+            }
+        </script>
         <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
         <script async
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyEkxNA1bXsxQ5O0Ehy21NRTWT1_Y-NW0&callback=initMap&libraries=&v=weekly"></script>
