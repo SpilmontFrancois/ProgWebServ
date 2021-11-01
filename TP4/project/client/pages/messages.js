@@ -9,7 +9,7 @@ let messages = 'init'
 if (localStorage.getItem('messages') && localStorage.getItem('messages') !== 'init')
     messages = JSON.parse(localStorage.getItem('messages'))
 if (messages === 'init') {
-    const { data } = httpRequest.get(SERVER_URL + '/messages')
+    const { data } = await httpRequest.get(SERVER_URL + '/messages')
     messages = data.filter((el) => el.user1 === localStorage.getItem('currentUser') || el.user2 === localStorage.getItem('currentUser'))
     messages.reverse()
     localStorage.setItem('messages', JSON.stringify(messages))
