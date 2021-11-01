@@ -82,10 +82,24 @@ convos.forEach((el) => {
     else
         user = el.user1
     console.log("adding query selector to ",document.querySelector('#' + user));
-    document.querySelector('#' + user).addEventListener('click', () => {
+
+    document.querySelector('#' + user).addEventListener('click', (e) => {
+        e.preventDefault()
         console.log("you've click on ",user);
+        let activeConv = messages
+        activeConv.reverse()
+        activeConv = activeConv.filter((elem) => elem.user1 === user || elem.user2 === user)
         document.querySelector('#userName').innerHTML = user
         document.querySelector('#messageList').innerHTML = ''
+        activeConv.forEach((el) => {
+            let author = el.user1 === localStorage.getItem('currentUser') ? 'Me' : el.user2
+            document.querySelector('#messageList').innerHTML += `
+                <div class="card m-2 p-2 ${el.user1 === localStorage.getItem('currentUser') ? 'bg-me' : 'bg-user'}">
+                    <h4>${author}</h4>
+                    <p>${el.content}</p>
+                </div>
+            `
+        })
     })
 })
 
@@ -124,28 +138,22 @@ document.querySelector('#noModal').addEventListener('click', (e) => {
 
 document.querySelector('#yesModal').addEventListener('click', (e) => {
     e.preventDefault()
-    // SAVE MESSAGE IN DATABASE & CALL METHOD TO CONSTRUCT THE MESSAGE
+    let pic = document.querySelector('#uploadPreview').src
+    addMessage(`<img src='${pic}' />`, 'Me', localStorage.getItem('currentUser'), document.querySelector('#userName').innerHTML)
 
     document.querySelector('#modal').classList.add('d-none')
     document.querySelector('#modal').classList.remove('show')
+    localStorage.setItem('messages', 'init')
 })
 
 document.querySelector('#send').addEventListener('click', (e) => {
     e.preventDefault()
-    let user1 = localStorage.getItem('currentUser')
-    let userConv = ''
-    // TODO : display messages received in the good color
     if (document.querySelector('#messageContent').value !== '') {
-        // add other parameter to the function -> user 1 and user 2
-        //addMessage(document.querySelector('#messageContent').value, 'Me', user1, user2)
+        addMessage(document.querySelector('#messageContent').value, 'Me', localStorage.getItem('currentUser'), document.querySelector('#userName').innerHTML)
         document.querySelector('#messageContent').value = ''
-        document.querySelector('#messageList').innerHTML += `
-        <div class="card m-2 p-2 bg-me">
-            <h4>${userConv}</h4>
-            <p>Bla Bla Bla</p>
-        </div>
-        `
         document.querySelector('#messageList').scrollTop = document.querySelector('#messageList').scrollHeight
+        messages.push({ user1: localStorage.getItem('currentUser'), user2: document.querySelector('#userName').innerHTML, content: document.querySelector('#messageContent').value, date: new Date() })
+        localStorage.setItem('messages', JSON.stringify(messages))
     }
 })
 
@@ -194,10 +202,9 @@ Array.prototype.forEach.call(close, function (el) {
 });
 
 async function addMessage(content, user, user1, user2) {
-    console.log(user, user1, user2);
     const { data } = await httpRequest.post(SERVER_URL + '/messages', JSON.stringify({ user1, user2, content }))
     document.querySelector('#messageList').innerHTML += `
-    <div class="card m-2 p-2 bg-me">
+    <div class="card m-2 p-2 ${user1 === localStorage.getItem('currentUser') ? 'bg-me' : 'bg-user'}">
         <h4>${user}</h4>
         <p>${content}</p>
     </div>
