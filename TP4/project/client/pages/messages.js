@@ -77,19 +77,19 @@ convos.forEach((el) => {
 })
 
 convos.forEach((el) => {
+    let u = el.user1
     if (el.user1 === localStorage.getItem('currentUser'))
-        user = el.user2
-    else
-        user = el.user1
+        u = el.user2
+
     console.log("adding query selector to ",document.querySelector('#' + user));
 
-    document.querySelector('#' + user).addEventListener('click', (e) => {
+    document.querySelector('#' + u).addEventListener('click', (e) => {
         e.preventDefault()
-        console.log("you've click on ",user);
+        console.log("you've click on ",u);
         let activeConv = messages
         activeConv.reverse()
-        activeConv = activeConv.filter((elem) => elem.user1 === user || elem.user2 === user)
-        document.querySelector('#userName').innerHTML = user
+        activeConv = activeConv.filter((elem) => elem.user1 === u || elem.user2 === u)
+        document.querySelector('#userName').innerHTML = u
         document.querySelector('#messageList').innerHTML = ''
         activeConv.forEach((el) => {
             let author = el.user1 === localStorage.getItem('currentUser') ? 'Me' : el.user2
