@@ -30,9 +30,6 @@ document.querySelector('#confirmButton').addEventListener('click', async (e) => 
     e.preventDefault()
     let firstname = document.querySelector('#firstname').value
     let lastname = document.querySelector('#lastname').value
-    let old_pass = document.querySelector('#oldpass').value
-    let new_pass = document.querySelector('#newpass').value
-    let confirm_pass = document.querySelector('#confirmpass').value
 
     if (contaminated)
         contaminated = 1
@@ -49,11 +46,6 @@ document.querySelector('#confirmButton').addEventListener('click', async (e) => 
     if (userData.contaminated !== contaminated)
         json['contaminated'] = contaminated
 
-    if (new_pass !== confirm_pass)
-        document.querySelector('#errorMessage').classList.remove('d-none')
-    else if (new_pass !== '')
-        json['password'] = new_pass
-
     if (Object.keys(json).length !== 0 && json.constructor === Object) {
         await httpRequest.put(SERVER_URL + '/users/' + userData.id, JSON.stringify(json))
         localStorage.setItem('userData', 'init')
@@ -65,9 +57,6 @@ document.querySelector('#cancelButton').addEventListener('click', (e) => {
     document.querySelector('#firstname').value = userData.firstname
     document.querySelector('#lastname').value = userData.lastname
     document.querySelector('#contaminated').checked = userData.contaminated
-    document.querySelector('#oldpass').value = ''
-    document.querySelector('#newpass').value = ''
-    document.querySelector('#confirmpass').value = ''
 })
 
 document.querySelector('#button_logout').addEventListener('click', (e) => {

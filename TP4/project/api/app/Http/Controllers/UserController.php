@@ -118,7 +118,6 @@ class UserController extends Controller
             'firstname' => 'sometimes|string',
             'lastname' => 'sometimes|string',
             'login' => 'sometimes|string',
-            'password' => 'sometimes|string',
             'coordinates' => 'sometimes|string',
             'contaminated' => 'sometimes|integer'
         ]);

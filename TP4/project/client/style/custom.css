@@ -46,17 +46,23 @@ small {
     cursor: pointer;
 }
 
+.cursor-na {
+    cursor: not-allowed;
+}
+
 .bg-opaque {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-#messageList::-webkit-scrollbar
-{
-	width: .5rem;
+#messageList::-webkit-scrollbar {
+    width: .5rem;
 }
 
-#messageList::-webkit-scrollbar-thumb
-{
-	border-radius: .5rem;
-	background-color: #0f222d;
+#messageList::-webkit-scrollbar-thumb {
+    border-radius: .5rem;
+    background-color: #0f222d;
+}
+
+.list-group-item-action:focus {
+    background-color: rgb(255, 166, 0);
 }

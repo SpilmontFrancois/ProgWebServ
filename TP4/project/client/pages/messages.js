@@ -17,7 +17,7 @@ if (messages === 'init') {
     const { data } = await httpRequest.get(SERVER_URL + '/messages')
     messages = data.filter((el) => el.user1 === localStorage.getItem('currentUser') || el.user2 === localStorage.getItem('currentUser'))
     messages.reverse()
-    console.log("message fetched get ",data);
+    console.log("message fetched get ", data);
     localStorage.setItem('messages', JSON.stringify(messages))
 }
 
@@ -26,7 +26,7 @@ let lftM = "";
 //à la première initialisation la date n'a paas forcèment le même format en fonction
 //du language du navigateur
 try {
-    lftM = JSON.parse(localStorage.getItem('lastFetchedMessages'))    
+    lftM = JSON.parse(localStorage.getItem('lastFetchedMessages'))
 } catch (error) {
     lftM = "2021-10-31T22:05:34.758Z"
 }
@@ -34,7 +34,7 @@ try {
 let lastFetchedMessages = new Date(lftM).getTime()
 let diffMs = (today - lastFetchedMessages)
 let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000)
-console.log("diff since last mess fetch : ",diffMs, diffMins)
+console.log("diff since last mess fetch : ", diffMs, diffMins)
 if (diffMins >= 1) {
     localStorage.setItem('lastFetchedMessages', JSON.stringify(new Date()))
     localStorage.setItem('messages', 'init')
@@ -43,24 +43,24 @@ if (diffMins >= 1) {
 
 let convos = []
 const unique = [new Set(messages.map(item => item.user1 || item.user2))];
-console.log("the unique list is : ",unique);
-console.log("the messages list is : ",messages);
+console.log("the unique list is : ", unique);
+console.log("the messages list is : ", messages);
 let lUser = []
 messages.forEach(element => {
     console.log("enter in messages");
     let cu = localStorage.getItem('currentUser');
-    let cible="";
+    let cible = "";
     if (element.user1 === cu || element.user2 === cu) {
         if (element.user1 === cu) {
             cible = element.user2
-        } else{cible=element.user1}
-        console.log("cible is ",cible);
+        } else { cible = element.user1 }
+        console.log("cible is ", cible);
         let tmpIndex = convos.findIndex(elem => elem.user1 === cible || elem.user2 === cible)
-        if(tmpIndex != -1) {
+        if (tmpIndex != -1) {
             console.log("convos include", convos[tmpIndex])
             convos.splice(tmpIndex, 1);
             convos.push(element)
-        }else{
+        } else {
             console.log("convos not include");
             convos.push(element)
         }
@@ -77,8 +77,8 @@ unique.forEach((el) => {
         console.log("tmpMess :",tmpMess);
         //convos.push(tmpMess)
     })*/
-    
-console.log("the convos list is : ",convos);
+
+console.log("the convos list is : ", convos);
 
 let user
 convos.forEach((el) => {
@@ -93,19 +93,21 @@ convos.forEach((el) => {
     addConvRightPanel(user, el.content, new Date(Date.parse(el.date)).toLocaleDateString())
 })
 
+let messagesReverse = messages
+messagesReverse.reverse()
+let activeConv
+
 convos.forEach((el) => {
     let u = el.user1
     if (el.user1 === localStorage.getItem('currentUser'))
         u = el.user2
 
-    console.log("adding query selector to ",document.querySelector('#' + user));
+    console.log("adding query selector to ", document.querySelector('#' + user));
 
     document.querySelector('#' + u).addEventListener('click', (e) => {
         e.preventDefault()
-        console.log("you've click on ",u);
-        let activeConv = messages
-        activeConv.reverse()
-        activeConv = activeConv.filter((elem) => elem.user1 === u || elem.user2 === u)
+        console.log("you've click on ", u);
+        activeConv = messagesReverse.filter((elem) => elem.user1 === u || elem.user2 === u)
         document.querySelector('#userName').innerHTML = u
         document.querySelector('#messageList').innerHTML = ''
         activeConv.forEach((el) => {
@@ -187,6 +189,7 @@ document.querySelector('#newConv').addEventListener('click', (e) => {
     let user1 = localStorage.getItem('currentUser')
     let user2 = document.querySelector('#username').value
     let content = document.querySelector('#message').value
+    localStorage.setItem('messages', 'init')
     addMessage(content, 'Me', user1, user2)
 })
 
@@ -234,7 +237,7 @@ function addConvRightPanel(username, lastMessage, date) {
     console.log("we're adding a convRightPanel");
     lastMessage = lastMessage.lenght > 40 ? lastMessage.subStr(0, 40) + '...' : lastMessage
     //affichage d'un dernier message de type image
-    if (lastMessage.substr(0,4)==='<img') {
+    if (lastMessage.substr(0, 4) === '<img') {
         lastMessage = "image";
     }
     document.querySelector('#convoList').innerHTML += `

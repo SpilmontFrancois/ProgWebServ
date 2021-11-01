@@ -9,9 +9,9 @@ window.onbeforeunload = function () {
 //localStorage.removeItem('api-access-token')
 localStorage.removeItem('expireToken')
 localStorage.setItem('messages', 'init')
-localStorage.setItem('contaminated', '[]')
-localStorage.setItem('lastFetchedCoo', new Date(new Date() - 10 * 60000))
-localStorage.setItem('lastFetchedMessages', new Date(new Date() - 10 * 60000))
+localStorage.setItem('contaminated', 'init')
+localStorage.setItem('lastFetchedCoo', JSON.stringify(new Date(new Date() - 10 * 60000).toISOString()))
+localStorage.setItem('lastFetchedMessages', JSON.stringify(new Date(new Date() - 10 * 60000).toISOString()))
 let contaminated = false
 
 document.querySelector('#registerButton').addEventListener('click', (e) => {
