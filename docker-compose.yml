@@ -9,7 +9,7 @@ services:
     ports:
       - 8001:80
     volumes:
-      - ./api:/var/www/html
+      - ./TP4/project/api:/var/www/html
 
   db:
     image: mysql
@@ -28,6 +28,13 @@ services:
     restart: always
     ports:
       - 8081:8080
+  
+  composer:
+    image: composer
+    command : install
+    volumes:
+        - ./api:/var/www
+    working_dir: /var/www
 
       
 volumes:
