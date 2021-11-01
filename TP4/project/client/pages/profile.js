@@ -12,7 +12,7 @@ if (localStorage.getItem('userData') !='undefined' && localStorage.getItem('user
     userData = JSON.parse(localStorage.getItem('userData'))
 
 if (userData === 'init') {
-    let { data } = await httpRequest.get(SERVER_URL + '/users')
+    let { data } =  httpRequest.get(SERVER_URL + '/users')
     let index = data.findIndex((el) => el.login === localStorage.getItem('currentUser'))    
     localStorage.setItem('userData', JSON.stringify(data[index]))
 }

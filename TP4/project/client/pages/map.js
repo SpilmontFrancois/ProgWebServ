@@ -5,19 +5,19 @@ if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
     window.location.href = './login.html'
 
 function initMap() {
-    const map = new google.maps.Map(document.getElementById("content"), {
+    const map = new google.maps.Map(document.getElementById('content'), {
         zoom: 15,
         center: userPos,
     })
 
-    const centerControlDiv = document.createElement("div")
+    const centerControlDiv = document.createElement('div')
 
     CenterControl(centerControlDiv, map)
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(centerControlDiv)
 
     const userIcon = {
-        path: "M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z",
-        fillColor: "darkcyan",
+        path: 'M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z',
+        fillColor: 'darkcyan',
         fillOpacity: 1,
         strokeWeight: 0,
         rotation: 0,
@@ -76,7 +76,7 @@ function initMap() {
     var backgroundCircle = new google.maps.Circle({
         map: map,
         radius: 100200000,
-        strokeColor: "#00000000"
+        strokeColor: '#00000000'
     })
     backgroundCircle.bindTo('center', userMarker, 'position')
 
@@ -84,35 +84,35 @@ function initMap() {
         map: map,
         radius: 1000,
         fillColor: '#FFFFFF',
-        strokeColor: "#0000003F"
+        strokeColor: '#0000003F'
     })
     radiusCircle.bindTo('center', userMarker, 'position')
 }
 
 function CenterControl(controlDiv, map) {
-    const controlUI = document.createElement("div")
-    controlUI.style.backgroundColor = "#fff"
-    controlUI.style.border = "2px solid #fff"
-    controlUI.style.borderRadius = "3px"
-    controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)"
-    controlUI.style.cursor = "pointer"
-    controlUI.style.marginTop = "8px"
-    controlUI.style.marginBottom = "22px"
-    controlUI.style.textAlign = "center"
-    controlUI.title = "Click to recenter the map"
+    const controlUI = document.createElement('div')
+    controlUI.style.backgroundColor = '#fff'
+    controlUI.style.border = '2px solid #fff'
+    controlUI.style.borderRadius = '3px'
+    controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)'
+    controlUI.style.cursor = 'pointer'
+    controlUI.style.marginTop = '8px'
+    controlUI.style.marginBottom = '22px'
+    controlUI.style.textAlign = 'center'
+    controlUI.title = 'Click to recenter the map'
     controlDiv.appendChild(controlUI)
 
-    const controlText = document.createElement("div")
-    controlText.style.color = "rgb(25,25,25)"
-    controlText.style.fontFamily = "Roboto,Arial,sans-serif"
-    controlText.style.fontSize = "16px"
-    controlText.style.lineHeight = "38px"
-    controlText.style.paddingLeft = "5px"
-    controlText.style.paddingRight = "5px"
-    controlText.innerHTML = "Center Map"
+    const controlText = document.createElement('div')
+    controlText.style.color = 'rgb(25,25,25)'
+    controlText.style.fontFamily = 'Roboto,Arial,sans-serif'
+    controlText.style.fontSize = '16px'
+    controlText.style.lineHeight = '38px'
+    controlText.style.paddingLeft = '5px'
+    controlText.style.paddingRight = '5px'
+    controlText.innerHTML = 'Center Map'
     controlUI.appendChild(controlText)
 
-    controlUI.addEventListener("click", () => {
+    controlUI.addEventListener('click', () => {
         map.setCenter(userPos)
         map.setZoom(15)
     })

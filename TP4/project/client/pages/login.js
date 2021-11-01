@@ -3,7 +3,7 @@ import httpRequest from '../utils/httpRequest.js'
 const SERVER_URL = 'http://127.0.0.1:8001/api'
 
 window.onbeforeunload = function () {
-    return "Are you sure you want to leave?";
+    return 'Are you sure you want to leave?'
 }
 
 //localStorage.removeItem('api-access-token')

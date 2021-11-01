@@ -1,10 +1,6 @@
 import httpRequest from '../utils/httpRequest.js'
 
 const SERVER_URL = 'http://127.0.0.1:8001/api'
-/*
-window.onbeforeunload = function () {
-    return "Are you sure you want to leave?";
-}*/
 
 if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
     window.location.href = './login.html'
@@ -12,73 +8,50 @@ if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
 let messages = 'init'
 if (localStorage.getItem('messages') && localStorage.getItem('messages') !== 'init')
     messages = JSON.parse(localStorage.getItem('messages'))
-console.log(messages);
 if (messages === 'init') {
-    const { data } = await httpRequest.get(SERVER_URL + '/messages')
+    const { data } = httpRequest.get(SERVER_URL + '/messages')
     messages = data.filter((el) => el.user1 === localStorage.getItem('currentUser') || el.user2 === localStorage.getItem('currentUser'))
     messages.reverse()
-    console.log("message fetched get ", data);
     localStorage.setItem('messages', JSON.stringify(messages))
 }
 
 let today = new Date().getTime()
-let lftM = "";
+let lftM = ''
 //à la première initialisation la date n'a paas forcèment le même format en fonction
 //du language du navigateur
 try {
     lftM = JSON.parse(localStorage.getItem('lastFetchedMessages'))
 } catch (error) {
-    lftM = "2021-10-31T22:05:34.758Z"
+    lftM = '2021-10-31T22:05:34.758Z'
 }
 
 let lastFetchedMessages = new Date(lftM).getTime()
 let diffMs = (today - lastFetchedMessages)
 let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000)
-console.log("diff since last mess fetch : ", diffMs, diffMins)
 if (diffMins >= 1) {
     localStorage.setItem('lastFetchedMessages', JSON.stringify(new Date()))
     localStorage.setItem('messages', 'init')
-    console.log("we reset the message");
 }
 
 let convos = []
-const unique = [new Set(messages.map(item => item.user1 || item.user2))];
-console.log("the unique list is : ", unique);
-console.log("the messages list is : ", messages);
+const unique = [new Set(messages.map(item => item.user1 || item.user2))]
 let lUser = []
 messages.forEach(element => {
-    console.log("enter in messages");
-    let cu = localStorage.getItem('currentUser');
-    let cible = "";
+    let cu = localStorage.getItem('currentUser')
+    let cible = ''
     if (element.user1 === cu || element.user2 === cu) {
         if (element.user1 === cu) {
             cible = element.user2
         } else { cible = element.user1 }
-        console.log("cible is ", cible);
         let tmpIndex = convos.findIndex(elem => elem.user1 === cible || elem.user2 === cible)
         if (tmpIndex != -1) {
-            console.log("convos include", convos[tmpIndex])
-            convos.splice(tmpIndex, 1);
+            convos.splice(tmpIndex, 1)
             convos.push(element)
         } else {
-            console.log("convos not include");
             convos.push(element)
         }
     }
-});
-/*
-unique.forEach((el) => {
-        console.log("unique.el : ",el);
-
-        console.log("message is actually",messages);
-        let tmpIndex = messages.findIndex(elem => elem.user1 === el || elem.user2 === el)
-        console.log("tmpIndex", tmpIndex);
-        let tmpMess = messages[tmpIndex];
-        console.log("tmpMess :",tmpMess);
-        //convos.push(tmpMess)
-    })*/
-
-console.log("the convos list is : ", convos);
+})
 
 let user
 convos.forEach((el) => {
@@ -102,11 +75,8 @@ convos.forEach((el) => {
     if (el.user1 === localStorage.getItem('currentUser'))
         u = el.user2
 
-    console.log("adding query selector to ", document.querySelector('#' + user));
-
     document.querySelector('#' + u).addEventListener('click', (e) => {
         e.preventDefault()
-        console.log("you've click on ", u);
         activeConv = messagesReverse.filter((elem) => elem.user1 === u || elem.user2 === u)
         document.querySelector('#userName').innerHTML = u
         document.querySelector('#messageList').innerHTML = ''
@@ -136,7 +106,7 @@ document.querySelector('#input_file').addEventListener('change', (e) => {
     document.querySelector('#modal').classList.remove('d-none')
     document.querySelector('#modal').classList.add('show')
 
-    let file = document.getElementById("input_file").files[0]
+    let file = document.getElementById('input_file').files[0]
 
     document.querySelector('#filename').value = file.name
     document.querySelector('#uploadPreview').src = ''
@@ -146,7 +116,7 @@ document.querySelector('#input_file').addEventListener('change', (e) => {
         oFReader.readAsDataURL(file)
 
         oFReader.onload = function (oFREvent) {
-            document.getElementById("uploadPreview").src = oFREvent.target.result
+            document.getElementById('uploadPreview').src = oFREvent.target.result
         }
     }
 })
@@ -220,8 +190,8 @@ Array.prototype.forEach.call(close, function (el) {
         document.querySelector('#popUpMessage').classList.add('d-none')
         document.querySelector('#popUpConversation').classList.remove('show')
         document.querySelector('#popUpConversation').classList.add('d-none')
-    });
-});
+    })
+})
 
 async function addMessage(content, user, user1, user2) {
     const { data } = await httpRequest.post(SERVER_URL + '/messages', JSON.stringify({ user1, user2, content }))
@@ -234,11 +204,10 @@ async function addMessage(content, user, user1, user2) {
 }
 
 function addConvRightPanel(username, lastMessage, date) {
-    console.log("we're adding a convRightPanel");
     lastMessage = lastMessage.lenght > 40 ? lastMessage.subStr(0, 40) + '...' : lastMessage
     //affichage d'un dernier message de type image
     if (lastMessage.substr(0, 4) === '<img') {
-        lastMessage = "image";
+        lastMessage = 'image'
     }
     document.querySelector('#convoList').innerHTML += `
     <div id=${username} class="list-group list-group-flush scrollarea m-2 mb-0 rounded">
