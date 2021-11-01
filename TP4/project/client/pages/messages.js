@@ -163,18 +163,6 @@ document.querySelector('#newConv').addEventListener('click', (e) => {
     addMessage(content, 'Me', user1, user2)
 })
 
-document.querySelector('#joinGroup').addEventListener('click', async (e) => {
-    e.preventDefault()
-    let groupID = document.querySelector('#groupID').value
-    let json = { user_id: parseInt(JSON.parse(localStorage.getItem('userData')).id), group_id: parseInt(groupID), isAdmin: 0 }
-    const { data } = await httpRequest.post(SERVER_URL + '/users2group', JSON.stringify(json))
-})
-
-document.querySelector('#createGroup').addEventListener('click', (e) => {
-    e.preventDefault()
-    let lUser = document.querySelector('#lUser').value
-    //TODO
-})
 
 document.querySelector('#joinConv').addEventListener('click', (e) => {
     e.preventDefault()

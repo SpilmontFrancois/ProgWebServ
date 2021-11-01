@@ -6,7 +6,6 @@ window.onbeforeunload = function () {
     return 'Are you sure you want to leave?'
 }
 
-//localStorage.removeItem('api-access-token')
 localStorage.removeItem('expireToken')
 localStorage.setItem('messages', 'init')
 localStorage.setItem('contaminated', 'init')
@@ -43,12 +42,7 @@ document.querySelector('#loginButton').addEventListener('click', async (e) => {
     let userData = 'init'
     if (localStorage.getItem('userData') && localStorage.getItem('userData') !== 'init')
         userData = JSON.parse(localStorage.getItem('userData'))
-    /*
-    if (userData === 'init') {
-        let { data } = await httpRequest.get(SERVER_URL + '/users')
-        let index = data.findIndex((el) => el.login === localStorage.getItem('currentUser'))
-        localStorage.setItem('userData', JSON.stringify(data[index]))
-    }*/
+
     window.location.href = './profile.html'
 })
 
