@@ -48,8 +48,8 @@ class UserFriendController extends Controller
         $input = $request->all();
 
         $validator = Validator::make($input, ([
-            'user1' => 'required|integer',
-            'user2' => 'required|integer'
+            'user1' => 'required|string',
+            'user2' => 'required|string'
         ]));
 
         if ($validator->fails()) {
