@@ -1,6 +1,6 @@
 import httpRequest from '../utils/httpRequest.js'
 
-const SERVER_URL = 'http://127.0.0.1:8000/api'
+const SERVER_URL = 'http://127.0.0.1:8001/api'
 /*
 window.onbeforeunload = function () {
     return "Are you sure you want to leave?";
@@ -233,6 +233,10 @@ async function addMessage(content, user, user1, user2) {
 function addConvRightPanel(username, lastMessage, date) {
     console.log("we're adding a convRightPanel");
     lastMessage = lastMessage.lenght > 40 ? lastMessage.subStr(0, 40) + '...' : lastMessage
+    //affichage d'un dernier message de type image
+    if (lastMessage.substr(0,4)==='<img') {
+        lastMessage = "image";
+    }
     document.querySelector('#convoList').innerHTML += `
     <div id=${username} class="list-group list-group-flush scrollarea m-2 mb-0 rounded">
         <a href="#" class="list-group-item list-group-item-action py-3 lh-tight bg-logo text-white">

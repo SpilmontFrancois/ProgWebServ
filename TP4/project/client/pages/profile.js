@@ -1,6 +1,6 @@
 import httpRequest from './../utils/httpRequest.js'
 
-const SERVER_URL = 'http://127.0.0.1:8000/api'
+const SERVER_URL = 'http://127.0.0.1:8001/api'
 
 if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
     window.location.href = './login.html'

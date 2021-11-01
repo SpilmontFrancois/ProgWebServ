@@ -21,6 +21,7 @@ services:
       MYSQL_PASSWORD: pass
     volumes:
       - mysql-data:/var/lib/mysql
+      - ./api:/var/www
 
   adminer:
     image: adminer
