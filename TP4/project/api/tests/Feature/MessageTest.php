@@ -19,8 +19,8 @@ class MessageTest extends TestCase
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
         $message = Message::factory()->make([
-            'user1' => $user1->id,
-            'user2' => $user2->id
+            'user1' => $user1->login,
+            'user2' => $user2->login
         ]);
 
         $response = $this->post(route('messages.store'), [
@@ -44,8 +44,8 @@ class MessageTest extends TestCase
         $user2 = User::factory()->create();
 
         Message::factory()->count(25)->create([
-            'user1' => $user1->id,
-            'user2' => $user2->id
+            'user1' => $user1->login,
+            'user2' => $user2->login
         ]);
 
         $response = $this->get(route('messages.index'));
@@ -81,8 +81,8 @@ class MessageTest extends TestCase
         $user2 = User::factory()->create();
 
         $message = Message::factory()->create([
-            'user1' => $user1->id,
-            'user2' => $user2->id
+            'user1' => $user1->login,
+            'user2' => $user2->login
         ]);
 
         $response = $this->get(route('messages.show', $message->id));
@@ -107,8 +107,8 @@ class MessageTest extends TestCase
         $user2 = User::factory()->create();
 
         $message = Message::factory()->create([
-            'user1' => $user1->id,
-            'user2' => $user2->id
+            'user1' => $user1->login,
+            'user2' => $user2->login
         ]);
 
         $response = $this->patch(route('messages.update', $message->id), [
@@ -127,8 +127,8 @@ class MessageTest extends TestCase
         $user1 = User::factory()->create();
         $user2 = User::factory()->create();
         $message = Message::factory()->create([
-            'user1' => $user1->id,
-            'user2' => $user2->id
+            'user1' => $user1->login,
+            'user2' => $user2->login
         ]);
         $response = $this->delete(route('messages.destroy', $message->id));
         $response->assertSuccessful();

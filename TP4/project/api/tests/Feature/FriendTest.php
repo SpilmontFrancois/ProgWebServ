@@ -20,15 +20,15 @@ class FriendTest extends TestCase
         $u2 = User::factory()->create();
 
         $response = $this->post(route('users.friends.store', $u1->id), [
-            "user1" => $u1->id,
-            "user2" => $u2->id
+            "user1" => $u1->login,
+            "user2" => $u2->login
         ]);
 
         $response->assertSuccessful();
 
         $this->assertDatabaseHas('friends', [
-            "user1" => $u1->id,
-            "user2" => $u2->id
+            "user1" => $u1->login,
+            "user2" => $u2->login
         ]);
     }
 
@@ -39,15 +39,15 @@ class FriendTest extends TestCase
             $u2 = User::factory()->create();
 
             $response = $this->post(route('users.friends.store', $u1->id), [
-                "user1" => $u1->id,
-                "user2" => $u2->id
+                "user1" => $u1->login,
+                "user2" => $u2->login
             ]);
 
             $response->assertSuccessful();
 
             $this->assertDatabaseHas('friends', [
-                "user1" => $u1->id,
-                "user2" => $u2->id
+                "user1" => $u1->login,
+                "user2" => $u2->login
             ]);
         }
         $response = $this->get(route('users.friends.index', $u1->id));
@@ -73,49 +73,6 @@ class FriendTest extends TestCase
                 "per_page",
                 "to"
             ]
-        ]);
-    }
-
-    public function test_can_get_a_single_friend()
-    {
-        $u1 = User::factory()->create();
-        $u2 = User::factory()->create();
-
-        $friend = $this->post(route('users.friends.store', $u1->id), [
-            "user1" => $u1->id,
-            "user2" => $u2->id
-        ]);
-
-        $friend->assertSuccessful();
-
-        $response = $this->get(route('users.friends.show', ['user' => $u1->id, 'friend' => $u2->id]));
-        $response->assertSuccessful();
-        $response->assertJson([
-            'data' => [
-                "user1" => $u1->id,
-                "user2" => $u2->id
-            ],
-            'meta' => [
-                'success' => true,
-                'message' => "friend found"
-            ]
-        ]);
-    }
-
-    public function test_can_delete_an_friend()
-    {
-        $u1 = User::factory()->create();
-        $u2 = User::factory()->create();
-
-        $friend = $this->post(route('users.friends.store', $u1->id), [
-            "user1" => $u1->id,
-            "user2" => $u2->id
-        ]);
-        
-        $response = $this->delete(route('users.friends.destroy', ['user' => $u1->id, 'friend' => $u2->id]));
-        $response->assertSuccessful();
-        $this->assertSoftDeleted('friends', [
-            'id' => $friend['data']['id']
         ]);
     }
 }

@@ -13,31 +13,6 @@ class UserTest extends TestCase
 {
     use RefreshDatabase, WithFaker, WithoutMiddleware;
 
-    public function test_can_create_an_user()
-    {
-        $user = User::factory()->make();
-
-        $response = $this->post(route('users.store'), [
-            "firstname" => $user->firstname,
-            "lastname" => $user->lastname,
-            "login" => $user->login,
-            "password" => $user->password,
-            "coordinates" => $user->coordinates,
-            "contaminated" => $user->contaminated
-        ]);
-
-        $response->assertSuccessful();
-
-        $this->assertDatabaseHas('users', [
-            "firstname" => $user->firstname,
-            "lastname" => $user->lastname,
-            "login" => $user->login,
-            "password" => $user->password,
-            "coordinates" => $user->coordinates,
-            "contaminated" => $user->contaminated
-        ]);
-    }
-
     public function test_can_get_paginated_list_of_all_users()
     {
         User::factory()->count(25)->create();
