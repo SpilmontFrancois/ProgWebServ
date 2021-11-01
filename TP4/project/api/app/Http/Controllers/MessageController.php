@@ -16,7 +16,7 @@ class MessageController extends Controller
 {
     public function index(Request $request)
     {
-        return MessageResource::collection(Message::simplePaginate($request->input('paginate') ?? 15));
+        return MessageResource::collection(Message::simplePaginate($request->input('paginate') ?? 150));
     }
 
     public function show(int $id)

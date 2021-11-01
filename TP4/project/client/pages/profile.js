@@ -8,12 +8,12 @@ if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
 let contaminated = false
 
 let userData = 'init'
-if (localStorage.getItem('userData') && localStorage.getItem('userData') !== 'init')
+if (localStorage.getItem('userData') !='undefined' && localStorage.getItem('userData') !== 'init')
     userData = JSON.parse(localStorage.getItem('userData'))
 
 if (userData === 'init') {
     let { data } = await httpRequest.get(SERVER_URL + '/users')
-    let index = data.findIndex((el) => el.login === localStorage.getItem('currentUser'))
+    let index = data.findIndex((el) => el.login === localStorage.getItem('currentUser'))    
     localStorage.setItem('userData', JSON.stringify(data[index]))
 }
 

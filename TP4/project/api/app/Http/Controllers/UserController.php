@@ -15,7 +15,7 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        return UserResource::collection(User::simplePaginate($request->input('paginate') ?? 15));
+        return UserResource::collection(User::simplePaginate($request->input('paginate') ?? 100));
     }
 
     public function show(int $id)

@@ -11,38 +11,57 @@ if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
 let messages = 'init'
 if (localStorage.getItem('messages') && localStorage.getItem('messages') !== 'init')
     messages = JSON.parse(localStorage.getItem('messages'))
-
+console.log(messages);
 if (messages === 'init') {
     const { data } = await httpRequest.get(SERVER_URL + '/messages')
     messages = data.filter((el) => el.user1 === localStorage.getItem('currentUser') || el.user2 === localStorage.getItem('currentUser'))
     messages.reverse()
+    console.log("message fetched get ",data);
     localStorage.setItem('messages', JSON.stringify(messages))
 }
 
-let today = new Date()
+let today = new Date().getTime()
 let lftM = "";
 //à la première initialisation la date n'a paas forcèment le même format en fonction
 //du language du navigateur
 try {
-    let lftM = JSON.parse(localStorage.getItem('lastFetchedMessages'))    
+    lftM = JSON.parse(localStorage.getItem('lastFetchedMessages'))    
 } catch (error) {
-    let lftM = "2021-10-31T22:05:34.758Z"
+    lftM = "2021-10-31T22:05:34.758Z"
 }
-let lastFetchedMessages = new Date(lftM)
 
-    let diffMs = (today - lastFetchedMessages)
+let lastFetchedMessages = new Date(lftM).getTime()
+let diffMs = (today - lastFetchedMessages)
 let diffMins = Math.round(((diffMs % 86400000) % 3600000) / 60000)
-if (diffMins > 1) {
+console.log("diff since last mess fetch : ",diffMs, diffMins)
+if (diffMins >= 1) {
     localStorage.setItem('lastFetchedMessages', JSON.stringify(new Date()))
     localStorage.setItem('messages', 'init')
+    console.log("we reset the message");
 }
 
 let convos = []
-const unique = [...new Set(messages.map(item => item.user1 || item.user2))];
+const unique = [new Set(messages.map(item => item.user1 || item.user2))];
+console.log("the unique list is : ",unique);
+console.log("the messages list is : ",messages);
+messages.forEach(element => {
+    console.log("enter in messages");
+    if (element.user1 === localStorage.getItem('currentUser') || element.user2 === localStorage.getItem('currentUser'))
+        convos.push(element)
+});
+/*
 unique.forEach((el) => {
-    if (el !== localStorage.getItem('currentUser'))
-        convos.push(messages[messages.findIndex((elem) => elem.user1 === el || elem.user2 === el)])
-})
+        console.log("unique.el : ",el);
+
+        console.log("message is actually",messages);
+        let tmpIndex = messages.findIndex((elem) => elem.user1 === el || elem.user2 === el)
+        console.log("tmpIndex", tmpIndex);
+        let tmpMess = messages[tmpIndex];
+        console.log("tmpMess :",tmpMess);
+        //convos.push(tmpMess)
+    })
+    */
+console.log("the convos list is : ",convos);
 
 let user
 convos.forEach((el) => {
@@ -62,9 +81,9 @@ convos.forEach((el) => {
         user = el.user2
     else
         user = el.user1
-
+    console.log("adding query selector to ",document.querySelector('#' + user));
     document.querySelector('#' + user).addEventListener('click', () => {
-        console.log(user);
+        console.log("you've click on ",user);
         document.querySelector('#userName').innerHTML = user
         document.querySelector('#messageList').innerHTML = ''
     })
@@ -186,6 +205,7 @@ async function addMessage(content, user, user1, user2) {
 }
 
 function addConvRightPanel(username, lastMessage, date) {
+    console.log("we're adding a convRightPanel");
     lastMessage = lastMessage.lenght > 40 ? lastMessage.subStr(0, 40) + '...' : lastMessage
     document.querySelector('#convoList').innerHTML += `
     <div id=${username} class="list-group list-group-flush scrollarea m-2 mb-0 rounded">
