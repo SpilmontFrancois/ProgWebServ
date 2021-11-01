@@ -43,13 +43,13 @@ document.querySelector('#loginButton').addEventListener('click', async (e) => {
     let userData = 'init'
     if (localStorage.getItem('userData') && localStorage.getItem('userData') !== 'init')
         userData = JSON.parse(localStorage.getItem('userData'))
-
+    /*
     if (userData === 'init') {
         let { data } = await httpRequest.get(SERVER_URL + '/users')
         let index = data.findIndex((el) => el.login === localStorage.getItem('currentUser'))
         localStorage.setItem('userData', JSON.stringify(data[index]))
-    }
-    window.location.href = './map.html'
+    }*/
+    window.location.href = './profile.html'
 })
 
 document.querySelector('#registerButton2').addEventListener('click', async (e) => {
@@ -72,7 +72,7 @@ document.querySelector('#registerButton2').addEventListener('click', async (e) =
         localStorage.setItem('currentUser', login)
         localStorage.setItem('expireToken', data.expires_in)
         localStorage.setItem('userData', 'init')
-        window.location.href = './map.html'
+        window.location.href = './profile.html'
     }
     else
         document.querySelector('#errorMessage').classList.remove('d-none')

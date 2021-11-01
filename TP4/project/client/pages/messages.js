@@ -1,9 +1,10 @@
 import httpRequest from '../utils/httpRequest.js'
 
 const SERVER_URL = 'http://127.0.0.1:8000/api'
+/*
 window.onbeforeunload = function () {
     return "Are you sure you want to leave?";
-}
+}*/
 
 if (localStorage.getItem('expireToken') <= Math.floor(Date.now() / 1000))
     window.location.href = './login.html'
@@ -44,23 +45,39 @@ let convos = []
 const unique = [new Set(messages.map(item => item.user1 || item.user2))];
 console.log("the unique list is : ",unique);
 console.log("the messages list is : ",messages);
+let lUser = []
 messages.forEach(element => {
     console.log("enter in messages");
-    if (element.user1 === localStorage.getItem('currentUser') || element.user2 === localStorage.getItem('currentUser'))
-        convos.push(element)
+    let cu = localStorage.getItem('currentUser');
+    let cible="";
+    if (element.user1 === cu || element.user2 === cu) {
+        if (element.user1 === cu) {
+            cible = element.user2
+        } else{cible=element.user1}
+        console.log("cible is ",cible);
+        let tmpIndex = convos.findIndex(elem => elem.user1 === cible || elem.user2 === cible)
+        if(tmpIndex != -1) {
+            console.log("convos include", convos[tmpIndex])
+            convos.splice(tmpIndex, 1);
+            convos.push(element)
+        }else{
+            console.log("convos not include");
+            convos.push(element)
+        }
+    }
 });
 /*
 unique.forEach((el) => {
         console.log("unique.el : ",el);
 
         console.log("message is actually",messages);
-        let tmpIndex = messages.findIndex((elem) => elem.user1 === el || elem.user2 === el)
+        let tmpIndex = messages.findIndex(elem => elem.user1 === el || elem.user2 === el)
         console.log("tmpIndex", tmpIndex);
         let tmpMess = messages[tmpIndex];
         console.log("tmpMess :",tmpMess);
         //convos.push(tmpMess)
-    })
-    */
+    })*/
+    
 console.log("the convos list is : ",convos);
 
 let user
@@ -100,6 +117,8 @@ convos.forEach((el) => {
                 </div>
             `
         })
+        localStorage.setItem('lastFetchedMessages', JSON.stringify(new Date()))
+        localStorage.setItem('messages', 'init')
     })
 })
 

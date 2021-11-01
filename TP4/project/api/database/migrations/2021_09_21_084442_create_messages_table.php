@@ -17,7 +17,7 @@ class CreateMessagesTable extends Migration
             $table->increments('id');
             $table->string('user1');
             $table->string('user2');
-            $table->string('content');
+            $table->binary('content');
             $table->foreign('user1')->references('login')->on('users');
             $table->foreign('user2')->references('login')->on('users');
             $table->timestamps();
